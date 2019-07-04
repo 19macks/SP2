@@ -31,22 +31,22 @@
     </div>
 <div class="apply_to_doctor">
     <form class="select-doctor" action="#">
-        <select name="doctor" >
-            <option value="select" class="doctor select">Выберети врача </option>
-            <option value="pediatrician" class="doctor pediatrician">Терапевт</option>
-            <option value="cardiologist" class="doctor cardiologist">Кардиолог</option>
-            <option value="dentist" class="doctor dentist">Стоматолог</option>
+        <select id="select-doctor" name="doctor" >
+            <option value="select">Выберети врача </option>
+            <option value="therapist" class="doctor therapist" data-doc = "therapist">Терапевт</option>
+            <option value="cardiologist" class="doctor cardiologist" data-doc = "cardiologist">Кардиолог</option>
+            <option value="dentist" class="doctor dentist" data-doc = "dentist">Стоматолог</option>
         </select>
     </form>
-    <div class="container-for-form">
-        <label class="active form-request form-therapist" action="#">
+    <div class="container-for-forms-doctors">
+        <label class="active form-request form-therapist" data-doc = "therapist" action="#">
             <input type="text" placeholder="Фамилия">
             <input type="text" placeholder="Имя">
             <input type="text" placeholder="Отчество">
             <input type="text" placeholder="Возраст">
             <input type="text" placeholder="Цель визита">
         </label>
-        <label class="form-request form-cardiologist">
+        <label class="form-request form-cardiologist" data-doc = "cardiologist">
             <input type="text" placeholder="Фамилия">
             <input type="text" placeholder="Имя">
             <input type="text" placeholder="Отчество">
@@ -56,7 +56,7 @@
             <input type="text" placeholder="Индекс массы тела">
             <input type="text" placeholder="Перенесенные заболевания ССС">
         </label>
-        <label class="form-request form-dentist">
+        <label class="form-request form-dentist" data-doc = "dentist">
             <input type="text" placeholder="Фамилия">
             <input type="text" placeholder="Имя">
             <input type="text" placeholder="Отчество">
