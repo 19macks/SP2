@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="#" class="logo"></a>
+        <span class="button">visit to the doctor</span>
+    </header>
+    <section>
+        <div class="board">
+            <span class="not-found"> "no applications found" </span>
+            <div class="request request-1"></div>
+            <div class="request request-2"></div>
+            <div class="request request-3"></div>
+            <div class="request request-4"></div>
+            <div class="request request-5"></div>
+            <div class="request request-6"></div>
+            <div class="request request-7"></div>
+            <div class="request request-8"></div>
+        </div>
+    </section>
+    </div>
+<div class="apply_to_doctor">
+    <form class="select-doctor" action="#">
+        <select name="doctor" >
+            <option value="select" class="doctor select">Выберети врача </option>
+            <option value="pediatrician" class="doctor pediatrician">Терапевт</option>
+            <option value="cardiologist" class="doctor cardiologist">Кардиолог</option>
+            <option value="dentist" class="doctor dentist">Стоматолог</option>
+        </select>
+    </form>
+    <div class="container-for-form">
+        <label class="active form-request form-therapist" action="#">
+            <input type="text" placeholder="Фамилия">
+            <input type="text" placeholder="Имя">
+            <input type="text" placeholder="Отчество">
+            <input type="text" placeholder="Возраст">
+            <input type="text" placeholder="Цель визита">
+        </label>
+        <label class="form-request form-cardiologist">
+            <input type="text" placeholder="Фамилия">
+            <input type="text" placeholder="Имя">
+            <input type="text" placeholder="Отчество">
+            <input type="text" placeholder="Возраст">
+            <input type="text" placeholder="Цель визита">
+            <input type="text" placeholder="Обычное давление">
+            <input type="text" placeholder="Индекс массы тела">
+            <input type="text" placeholder="Перенесенные заболевания ССС">
+        </label>
+        <label class="form-request form-dentist">
+            <input type="text" placeholder="Фамилия">
+            <input type="text" placeholder="Имя">
+            <input type="text" placeholder="Отчество">
+            <input type="text" placeholder="Дата последнего посещения">
+            <input type="text" placeholder="Цель визита">
+        </label>
+        <span class="btn-creat-request">CREATE AN APPLICATION</span>
+    </div>
+
+
+
+
+</div>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+</script>
+<script src="script/main.js" ></script>
+</body>
+</html>

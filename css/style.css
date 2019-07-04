@@ -1,0 +1,147 @@
+.container {
+    margin: 100px auto;
+    padding: 50px;
+    border: 2px solid cadetblue;
+    box-shadow: 0 0 5px cadetblue;
+    width: 800px;
+    background-color: #CAE1FF;
+    font-family: cursive;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto 50px;
+    width: 700px;
+    height: 70px;
+    border: 1px solid dodgerblue;
+    box-shadow: dodgerblue;
+    background-color: white;
+}
+
+.logo {
+    display: inline-block;
+    width: 68px;
+    height: 68px;
+    margin-left: 50px;
+    background-image: url(../img/1416508.jpg);
+    background-size: cover;
+}
+
+.button {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: cursive;
+    border: 1px ridge cadetblue ;
+    border-radius: 3px;
+    box-shadow: 0 0 5px cadetblue;
+    padding: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+
+    margin: 0 auto;
+    width: 700px;
+    height: 350px;
+
+    border: 1px solid dodgerblue;
+    background-color: white;
+}
+
+.not-found {
+    margin: auto;
+    display: block;
+    color: grey;
+    font-size: 21px;
+    font-family: cursive;
+}
+
+.request {
+    display: none;
+    height: 140px;
+    width: 140px;
+    margin: 16px;
+    border: 1px solid sandybrown;
+
+}
+
+.form-therapist {
+    display: none;
+}
+
+.form-cardiologist {
+    display: none;
+}
+
+.form-dentist {
+    display: none;
+}
+
+.apply_to_doctor {
+    width: 14%;
+    border: 3px solid cadetblue;
+    border-radius: 3px;
+    box-shadow: 0 0 5px cadetblue;
+
+    position: absolute;
+    top: 30%;
+    right: 43%;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.select-doctor {
+    margin-bottom: 30px;
+}
+
+.select-doctor::after {
+    content: " ";
+    display: block;
+    width: 178px;
+    border-top: 1px solid cadetblue;
+    position: relative;
+    top: 16px;
+    left: 18px;
+}
+
+option {
+    width: 86%;
+}
+
+select {
+   width: 98%;
+}
+
+input {
+    width: 87%;
+    padding-left: 20px;
+    margin: 3px 0;
+}
+
+.btn-creat-request {
+    display: inline-block;
+    margin: 14px auto 0;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: cursive;
+    border: 1px ridge cadetblue;
+    border-radius: 3px;
+    box-shadow: 0 0 5px cadetblue;
+    background-color: lightgreen;
+    padding: 5px 34px;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+
+.active {
+    display: inline-block;
+}
