@@ -85,6 +85,7 @@ header {
 }
 
 .apply_to_doctor {
+    display: none;
     width: 14%;
     border: 3px solid cadetblue;
     border-radius: 3px;
@@ -140,6 +141,9 @@ input {
     user-select: none;
 }
 
+.container-for-forms-doctors {
+    display: none;
+}
 
 
 .active {
