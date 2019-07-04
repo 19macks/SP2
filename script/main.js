@@ -12,13 +12,19 @@ btnNewReq.addEventListener('click', () => {
 })
 
 let selectDoctor = document.querySelector('#select-doctor')
+let doctors = document.querySelectorAll('.doctor');
 
 selectDoctor.addEventListener('click', (event) => {
     let doctors = document.querySelectorAll('.doctor')
     let forms = document.querySelectorAll('.form-request')
-    eve
-    doctors.forEach((el) => {
-
-    })
+    console.log(event.target);
+    // if (event.target.getAttribute('data')  ) {
+    //     doctors.getAttribute()
+    // }
+    //
+    // eve
+    // doctors.forEach((el) => {
+    //
+    // })
 
 })
