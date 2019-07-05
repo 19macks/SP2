@@ -9,7 +9,7 @@ btnNewReq.addEventListener('click', () => {
 })
 //Выбрать определенного врача
 const selectDoctor = document.querySelector('#select-doctor')
-const btnCreatRequest = document.querySelector('.btn-creat-request')
+const btnCreatVisit = document.querySelector('.btn-creat-request')
 const forms = document.querySelectorAll('.form-request')
 const inputForm = document.querySelectorAll('.input-form')
 selectDoctor.addEventListener('click',function () {
@@ -17,7 +17,7 @@ selectDoctor.addEventListener('click',function () {
         forms.forEach((form)=>{
             if (form.getAttribute('data-doc') === this.value) {
                 form.classList.add('active')
-                btnCreatRequest.classList.add('active')
+                btnCreatVisit.classList.add('active')
 
                 inputForm.forEach((input) => {
                     input.value = ''
@@ -40,3 +40,33 @@ btnClosed.addEventListener('click', function () {
     })
         selectDoctor.value = 'select'
 })
+//Отправка данных. Проверка на заполненые строки
+const sendDataVisit = document.querySelector('.btn-creat-request')
+///////////////////////////////////////////////////////////
+/////////////////////// C_L_A_S_S /////////////////////////
+///////////////////////////////////////////////////////////
+
+class Visit {
+    constructor (surname, name, patronymic, purpose_of_visit, comments) {
+        this._user = [surname, name, patronymic]
+        this._visit = purpose_of_visit
+        this._comments = comments
+
+    }
+}
+
+class Therapist extends Visit {
+
+}
+
+let  visit = new Visit()
+console.log(visit);
+let therapist = new Therapist('Pan', "Artem", 'Grigorovich',"Life" )
+console.log(therapist);
+
+/*
+selectDoctor.addEventListener('click', function (event) {
+
+})*/
+
+
