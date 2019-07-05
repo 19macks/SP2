@@ -8,6 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="container">
@@ -30,6 +31,7 @@
     </section>
     </div>
 <div class="apply_to_doctor">
+    <i class="fa fa-times" aria-hidden="true"></i>
     <form class="select-doctor" action="#">
         <select id="select-doctor" name="doctor" >
             <option value="select">Выберети врача </option>
@@ -39,29 +41,32 @@
         </select>
     </form>
     <div class="container-for-forms-doctors">
-        <label class="active form-request form-therapist" data-doc = "therapist" action="#">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Возраст">
-            <input type="text" placeholder="Цель визита">
+        <label class="form-request form-therapist" data-doc = "therapist" action="#">
+            <input class="input-form" type="text" placeholder="Фамилия">
+            <input class="input-form" type="text" placeholder="Имя">
+            <input class="input-form" type="text" placeholder="Отчество">
+            <input class="input-form" type="text" placeholder="Возраст">
+            <input class="input-form" type="text" placeholder="Цель визита">
+            <textarea class="input-form comments"  placeholder="Ваши коментраии" type="text" rows="4" maxlength="400"></textarea>
         </label>
-        <label class="form-request form-cardiologist" data-doc = "cardiologist">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Возраст">
-            <input type="text" placeholder="Цель визита">
-            <input type="text" placeholder="Обычное давление">
-            <input type="text" placeholder="Индекс массы тела">
-            <input type="text" placeholder="Перенесенные заболевания ССС">
+        <label class="form-request form-cardiologist" data-doc = "cardiologist" action="#">
+            <input class="input-form" type="text" placeholder="Фамилия">
+            <input class="input-form" type="text" placeholder="Имя">
+            <input class="input-form" type="text" placeholder="Отчество">
+            <input class="input-form" type="text" placeholder="Возраст">
+            <input class="input-form" type="text" placeholder="Цель визита">
+            <input class="input-form" type="text" placeholder="Обычное давление">
+            <input class="input-form" type="text" placeholder="Индекс массы тела">
+            <input class="input-form" type="text" placeholder="Заболевания ССС">
+            <textarea class="input-form comments"  placeholder="Ваши коментраии" type="text" rows="4" maxlength="400"></textarea>
         </label>
-        <label class="form-request form-dentist" data-doc = "dentist">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Дата последнего посещения">
-            <input type="text" placeholder="Цель визита">
+        <label class="form-request form-dentist" data-doc = "dentist" action="#">
+            <input class="input-form" type="text" placeholder="Фамилия">
+            <input class="input-form" type="text" placeholder="Имя">
+            <input class="input-form" type="text" placeholder="Отчество">
+            <input class="input-form" type="text" placeholder="Дата последнего посещения">
+            <input class="input-form" type="text" placeholder="Цель визита">
+            <textarea class="input-form comments"  placeholder="Ваши коментраии" type="text" rows="4" maxlength="400"></textarea>
         </label>
         <span class="btn-creat-request">CREATE AN APPLICATION</span>
     </div>
