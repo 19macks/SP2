@@ -2,7 +2,7 @@
     margin: 100px auto;
     padding: 50px;
     border: 2px solid cadetblue;
-    box-shadow: 0 0 5px cadetblue;
+    box-shadow: 0 0 3px cadetblue;
     width: 800px;
     background-color: #CAE1FF;
     font-family: cursive;
@@ -15,7 +15,8 @@ header {
     margin: 0 auto 50px;
     width: 700px;
     height: 70px;
-    border: 1px solid dodgerblue;
+    border: 1px solid cadetblue;
+    box-shadow: 0 0 2px cadetblue;
     box-shadow: dodgerblue;
     background-color: white;
 }
@@ -51,7 +52,8 @@ header {
     width: 700px;
     height: 350px;
 
-    border: 1px solid dodgerblue;
+    border: 1px solid cadetblue;
+    box-shadow: 0 0 2px cadetblue;
     background-color: white;
 }
 
@@ -69,7 +71,19 @@ header {
     width: 140px;
     margin: 16px;
     border: 1px solid sandybrown;
+}
 
+
+.container-for-forms-doctors {
+    position: relative;
+}
+
+.fa-times {
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    color: cadetblue;
+    cursor: pointer;
 }
 
 .form-therapist {
@@ -120,14 +134,24 @@ select {
    width: 98%;
 }
 
-input {
-    width: 87%;
-    padding-left: 20px;
+.input-form {
+    border: 1px solid cadetblue;
+    box-shadow: 0 0 2px cadetblue;
+    padding-left: 5px;
     margin: 3px 0;
 }
 
+input {
+    width: 95%;
+}
+
+.comments {
+    width: 94%;
+    resize: none;
+}
+
 .btn-creat-request {
-    display: inline-block;
+    display: none;
     margin: 14px auto 0;
     font-size: 11px;
     font-weight: 700;
@@ -141,9 +165,6 @@ input {
     user-select: none;
 }
 
-.container-for-forms-doctors {
-    display: none;
-}
 
 
 .active {
