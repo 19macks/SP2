@@ -17,7 +17,6 @@ header {
     height: 70px;
     border: 1px solid cadetblue;
     box-shadow: 0 0 2px cadetblue;
-    box-shadow: dodgerblue;
     background-color: white;
 }
 
@@ -119,11 +118,11 @@ header {
 .select-doctor::after {
     content: " ";
     display: block;
-    width: 178px;
+    width: 60%;
     border-top: 1px solid cadetblue;
     position: relative;
     top: 16px;
-    left: 18px;
+    left: 20%;
 }
 
 option {
