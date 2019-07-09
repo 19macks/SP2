@@ -6,7 +6,7 @@ let select = document.getElementById('select');
 
 button.onclick = function () {
     form.classList.add("active");
-    
+
 };
 
 
