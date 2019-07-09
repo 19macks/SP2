@@ -1,12 +1,15 @@
 const btnNewReq = document.querySelector(".button")
 const btnClosed = document.querySelector('.fa-times')
 const btnCreatVisit = document.querySelector('.btn-creat-request')
+const btnClosedCardVisit = document.querySelector('.request-closed')
 const selectDoctor = document.querySelector('#select-doctor')
 const forms = document.querySelectorAll('.form-request')
 const request_doctor = document.querySelector(".apply_to_doctor")
 const inputForm = document.querySelectorAll('.input-form')
-let active_doctor
+const board = document.querySelector('.board')
+const notFound = document.querySelector('.not-found ')
 
+let active_doctor
 let doc
 let surname
 let name
@@ -20,8 +23,12 @@ let disease
 let lastVisit
 
 let visit
-let board_visit = []
+let boardVisit = []
 
+let seriaBoard
+
+loadDataLocalSt()
+creatItemVisitInStart()
 //////////// C_L_A_S_S ////////////
 class Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments) {
@@ -32,19 +39,13 @@ class Visit {
         this._visit = purposeOfVisit
         this._comments = comments
     }
-
-    creatVisit () {
-
-    }
 }
-
 class Therapist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
         this._age = age
     }
 }
-
 class Cardiologist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, heart_pressure, index_mass, disease) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
@@ -53,14 +54,12 @@ class Cardiologist extends Visit {
         this._disease = disease
     }
 }
-
 class Dentist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
         this._lastVisit = lastVisit
     }
 }
-
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
     if (request_doctor.getAttribute('class') === "apply_to_doctor" ) {
@@ -69,7 +68,6 @@ btnNewReq.addEventListener('click', () => {
         active_doctor = undefined
     }
 })
-
 //Выбрать определенного врача
 selectDoctor.addEventListener('click',function () {
     if (this.value) {
@@ -87,19 +85,6 @@ selectDoctor.addEventListener('click',function () {
         })
     }
 })
-
-//Функция обнуления формы
-function resetForm () {
-    request_doctor.classList.remove('active')
-    inputForm.forEach((input) => {
-        input.value = ''
-    })
-    forms.forEach((form) => {
-        form.classList.remove('active')
-    })
-    selectDoctor.value = 'select'
-}
-
 //Отправка данных с проверкой на заполненые строки
 btnCreatVisit.addEventListener('click', () => {
     if (active_doctor === 'therapist') {
@@ -113,7 +98,8 @@ btnCreatVisit.addEventListener('click', () => {
 
         if (surname && name && patronymic && age && purposeOfVisit !== false) {
             visit = new Therapist(doc, surname, name, patronymic, purposeOfVisit, comments, age)
-            board_visit.push(visit)
+            writeVisitInArrAndLocalSt()
+            creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
@@ -132,7 +118,8 @@ btnCreatVisit.addEventListener('click', () => {
 
         if (surname && name && patronymic && age && purposeOfVisit && heartPressure && indexMass && disease !== false) {
             visit = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heartPressure, indexMass, disease)
-            board_visit.push(visit)
+            writeVisitInArrAndLocalSt()
+            creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
@@ -148,22 +135,91 @@ btnCreatVisit.addEventListener('click', () => {
 
         if (surname && name && patronymic && lastVisit && purposeOfVisit !== false) {
             visit = new Dentist (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit)
-            board_visit.push(visit)
+            writeVisitInArrAndLocalSt()
+            creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
         }
     }
-console.log(board_visit);
-    return board_visit
+    return boardVisit
 })
-
 //Закрыть крестиком форму выбора врача с обнулением инпутов
 btnClosed.addEventListener('click', function () {
     resetForm()
 })
+//Удаляем крестиком карточку визита
+// btnClosedCardVisit.addEventListener('click', (event) => {
+//
+// })
 
 
-
-
-
+// Load from Local Storage
+function loadDataLocalSt () {
+    if (localStorage.Board_Visit) {
+        boardVisit = JSON.parse(localStorage.getItem('Board_Visit'))
+    }
+}
+// Creat cards visit on load from Local Storage
+function creatItemVisitInStart () {
+    if (localStorage.Board_Visit) {
+        notFound.classList.add('not-active')
+        boardVisit.forEach((visit) => {
+            let divVisit = document.createElement('div')
+                divVisit.classList.add('request')
+                board.appendChild(divVisit)
+                divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
+            let spanSurnameUser = document.createElement('p')
+                divVisit.appendChild(spanSurnameUser)
+                spanSurnameUser.innerHTML = `Фамилия : ${visit._userSurname}`
+            let spanNameUser = document.createElement('p')
+                divVisit.appendChild(spanNameUser)
+                spanNameUser.innerHTML = `Имя : ${visit._userName}`
+            let spanDoctor = document.createElement('p')
+            divVisit.appendChild(spanDoctor)
+            spanDoctor.innerHTML = `Доктор : ${visit._doctor}`
+            let spanMoreInfo = document.createElement('p')
+            divVisit.appendChild(spanMoreInfo)
+            spanMoreInfo.classList.add('more-info')
+            spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+        })
+    }
+}
+//Function reset form
+function resetForm () {
+    request_doctor.classList.remove('active')
+    inputForm.forEach((input) => {
+        input.value = ''
+    })
+    forms.forEach((form) => {
+        form.classList.remove('active')
+    })
+    selectDoctor.value = 'select'
+}
+//Write new visit in arr & Local Storage
+function writeVisitInArrAndLocalSt() {
+    boardVisit.push(visit)
+    seriaBoard = JSON.stringify(boardVisit)
+    localStorage.setItem("Board_Visit", seriaBoard)
+}
+//Creat new visit
+function creatNewCardVisit() {
+    notFound.classList.add('not-active')
+    let divVisit = document.createElement('div')
+    divVisit.classList.add('request')
+    board.appendChild(divVisit)
+    divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
+    let spanSurnameUser = document.createElement('p')
+    divVisit.appendChild(spanSurnameUser)
+    spanSurnameUser.innerHTML = `Фамилия : ${surname}`
+    let spanNameUser = document.createElement('p')
+    divVisit.appendChild(spanNameUser)
+    spanNameUser.innerHTML = `Имя : ${name}`
+    let spanDoctor = document.createElement('p')
+    divVisit.appendChild(spanDoctor)
+    spanDoctor.innerHTML = `Доктор : ${doc}`
+    let spanMoreInfo = document.createElement('p')
+    divVisit.appendChild(spanMoreInfo)
+    spanMoreInfo.classList.add('more-info')
+    spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+}
