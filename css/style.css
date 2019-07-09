@@ -89,7 +89,7 @@ header {
     border: 3px solid cadetblue;
     border-radius: 3px;
     box-shadow: 0 0 5px cadetblue;
-
+    display: none;
     position: absolute;
     top: 30%;
     right: 43%;
