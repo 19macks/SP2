@@ -8,6 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="fonts/fontawesome-free-5.9.0-web/css/all.css">
 </head>
 <body>
 <div class="container">
@@ -30,16 +31,19 @@
     </section>
     </div>
 <div class="apply_to_doctor">
+    <div class="close_button">
+        <i class="fas fa-times"></i>
+    </div>
     <form class="select-doctor" action="#">
-        <select name="doctor" >
-            <option value="select" class="doctor select">Выберети врача </option>
-            <option value="pediatrician" class="doctor pediatrician">Терапевт</option>
-            <option value="cardiologist" class="doctor cardiologist">Кардиолог</option>
-            <option value="dentist" class="doctor dentist">Стоматолог</option>
+        <select name="doctor" id="select">
+            <option value="select_doctor">Выберети врача </option>
+            <option value="therapist">Терапевт</option>
+            <option value="cardiologist">Кардиолог</option>
+            <option value="dentist">Стоматолог</option>
         </select>
     </form>
     <div class="container-for-form">
-        <label class="active form-request form-therapist" action="#">
+        <label class="form-request form-therapist" action="#">
             <input type="text" placeholder="Фамилия">
             <input type="text" placeholder="Имя">
             <input type="text" placeholder="Отчество">
