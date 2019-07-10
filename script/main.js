@@ -1,13 +1,14 @@
 const btnNewReq = document.querySelector(".button")
 const btnClosed = document.querySelector('.fa-times')
 const btnCreatVisit = document.querySelector('.btn-creat-request')
-const btnClosedCardVisit = document.querySelector('.request-closed')
 const selectDoctor = document.querySelector('#select-doctor')
 const forms = document.querySelectorAll('.form-request')
 const request_doctor = document.querySelector(".apply_to_doctor")
 const inputForm = document.querySelectorAll('.input-form')
 const board = document.querySelector('.board')
+const body = document.querySelector('body')
 const notFound = document.querySelector('.not-found ')
+
 
 let active_doctor
 let doc
@@ -32,6 +33,7 @@ creatItemVisitInStart()
 //////////// C_L_A_S_S ////////////
 class Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments) {
+        this._idUser = `${surname}${name}`
         this._doctor = doc
         this._userSurname = surname
         this._userName = name
@@ -60,6 +62,8 @@ class Dentist extends Visit {
         this._lastVisit = lastVisit
     }
 }
+
+
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
     if (request_doctor.getAttribute('class') === "apply_to_doctor" ) {
@@ -68,6 +72,23 @@ btnNewReq.addEventListener('click', () => {
         active_doctor = undefined
     }
 })
+//Скрыть форму выбора врача по клику рядом
+selectDoctor.addEventListener('blur', () => {
+    request_doctor.classList.remove('active')
+})
+
+/*
+body.addEventListener('click', (event) => {
+    // if (request_doctor.getAttributeNames() )
+    if (event.target !== request_doctor && event.target.parentElement !== request_doctor
+        && event.target !== btnNewReq && event.target.parentElement.tagName !== 'SELECT'
+        && event.target.parentElement.tagName !== 'FORM' && event.target.parentElement.tagName !== 'LABEL') {
+        request_doctor.classList.remove('active')
+    } else {
+        console.log(event.target.parentElement.tagName);
+    }
+})
+*/
 //Выбрать определенного врача
 selectDoctor.addEventListener('click',function () {
     if (this.value) {
@@ -149,9 +170,19 @@ btnClosed.addEventListener('click', function () {
     resetForm()
 })
 //Удаляем крестиком карточку визита
-// btnClosedCardVisit.addEventListener('click', (event) => {
-//
-// })
+board.addEventListener('click', (event) => {
+    if ( event.target.tagName === 'I' ) {
+        boardVisit = boardVisit.filter((visit) => {
+            return visit._idUser !== (event.target.parentElement.getAttribute('data-user'))
+        })
+        event.target.parentElement.remove()
+        seriaBoard = JSON.stringify(boardVisit)
+        localStorage.setItem("Board_Visit", seriaBoard)
+        if (boardVisit.length === 0) {
+            notFound.classList.remove('not-active')
+        }
+    }
+})
 
 
 // Load from Local Storage
@@ -162,11 +193,16 @@ function loadDataLocalSt () {
 }
 // Creat cards visit on load from Local Storage
 function creatItemVisitInStart () {
-    if (localStorage.Board_Visit) {
+    if (boardVisit.length === 0) {
+        notFound.classList.remove('not-active')
+    } else {
         notFound.classList.add('not-active')
+    }
+    if (localStorage.Board_Visit) {
         boardVisit.forEach((visit) => {
             let divVisit = document.createElement('div')
                 divVisit.classList.add('request')
+                divVisit.setAttribute('data-user', `${visit._userSurname}${visit._userName}`)
                 board.appendChild(divVisit)
                 divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
             let spanSurnameUser = document.createElement('p')
@@ -207,10 +243,12 @@ function creatNewCardVisit() {
     notFound.classList.add('not-active')
     let divVisit = document.createElement('div')
     divVisit.classList.add('request')
+
     board.appendChild(divVisit)
     divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
     let spanSurnameUser = document.createElement('p')
     divVisit.appendChild(spanSurnameUser)
+    divVisit.setAttribute('data-user', `${surname}${name}`)
     spanSurnameUser.innerHTML = `Фамилия : ${surname}`
     let spanNameUser = document.createElement('p')
     divVisit.appendChild(spanNameUser)
