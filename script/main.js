@@ -1,9 +1,11 @@
 const btnNewReq = document.querySelector(".button")
 const btnClosed = document.querySelector('.fa-times')
 const btnCreatVisit = document.querySelector('.btn-creat-request')
+const btnShowMore = document.querySelectorAll('.more-info')
 const selectDoctor = document.querySelector('#select-doctor')
 const forms = document.querySelectorAll('.form-request')
 const request_doctor = document.querySelector(".apply_to_doctor")
+const wrapRequestDoctor = document.querySelector('.wrap-form-apply-doctor')
 const inputForm = document.querySelectorAll('.input-form')
 const board = document.querySelector('.board')
 const body = document.querySelector('body')
@@ -67,28 +69,20 @@ class Dentist extends Visit {
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
     if (request_doctor.getAttribute('class') === "apply_to_doctor" ) {
-        request_doctor.classList.add('active')
+        wrapRequestDoctor.classList.add('active')
         btnCreatVisit.classList.remove('active')
         active_doctor = undefined
     }
 })
-//Скрыть форму выбора врача по клику рядом
-selectDoctor.addEventListener('blur', () => {
-    request_doctor.classList.remove('active')
+//Закрыть форму выбора врача по клику рядом с обнулением инпутов
+wrapRequestDoctor.addEventListener('click', (event) => {
+    if (event.currentTarget === event.target)
+    resetForm()
 })
-
-/*
-body.addEventListener('click', (event) => {
-    // if (request_doctor.getAttributeNames() )
-    if (event.target !== request_doctor && event.target.parentElement !== request_doctor
-        && event.target !== btnNewReq && event.target.parentElement.tagName !== 'SELECT'
-        && event.target.parentElement.tagName !== 'FORM' && event.target.parentElement.tagName !== 'LABEL') {
-        request_doctor.classList.remove('active')
-    } else {
-        console.log(event.target.parentElement.tagName);
-    }
+//Закрыть форму выбора врача крестиком с обнулением инпутов
+btnClosed.addEventListener('click', function () {
+    resetForm()
 })
-*/
 //Выбрать определенного врача
 selectDoctor.addEventListener('click',function () {
     if (this.value) {
@@ -165,25 +159,90 @@ btnCreatVisit.addEventListener('click', () => {
     }
     return boardVisit
 })
-//Закрыть крестиком форму выбора врача с обнулением инпутов
-btnClosed.addEventListener('click', function () {
-    resetForm()
-})
-//Удаляем крестиком карточку визита
+//Обработчик событий доски (карточек)
 board.addEventListener('click', (event) => {
-    if ( event.target.tagName === 'I' ) {
+    let target = event.target
+    let attribute = target.parentElement.getAttribute('data-user')
+    // Удаляем крестиком карточку визита
+    if ( target.tagName === 'I' ) {
         boardVisit = boardVisit.filter((visit) => {
-            return visit._idUser !== (event.target.parentElement.getAttribute('data-user'))
+            return visit._idUser !== (target.parentElement.getAttribute('data-user'))
         })
-        event.target.parentElement.remove()
+        target.parentElement.remove()
         seriaBoard = JSON.stringify(boardVisit)
         localStorage.setItem("Board_Visit", seriaBoard)
         if (boardVisit.length === 0) {
             notFound.classList.remove('not-active')
         }
     }
-})
+    // Показать больше
+    if ( target.className === 'show-info') {
+        boardVisit.forEach((visit) => {
+            if ( attribute === visit._idUser) {
+                let parentDiv = target.parentElement
+                for (let key in visit) {
+                    target.remove()
+                    switch (key) {
+                        case '_visit':
+                            let spanPurposeOfVisit = document.createElement('p')
+                            parentDiv.appendChild(spanPurposeOfVisit)
+                            spanPurposeOfVisit.classList.add('more-info')
+                            spanPurposeOfVisit.innerHTML = `Цель визита : ${visit._visit}`
+                            break
+                        case '_age':
+                            let spanAge = document.createElement('p')
+                            parentDiv.appendChild(spanAge)
+                            spanAge.classList.add('more-info')
+                            spanAge.innerHTML = `Возраст : ${visit._age}`
+                            break
+                        case '_pressure':
+                            let spanPressure = document.createElement('p')
+                            parentDiv.appendChild(spanPressure)
+                            spanPressure.classList.add('more-info')
+                            spanPressure.innerHTML = `Обычное давление : ${visit._pressure}`
+                            break
+                        case '_indexMass':
+                            let spanIndexMass = document.createElement('p')
+                            parentDiv.appendChild(spanIndexMass)
+                            spanIndexMass.classList.add('more-info')
+                            spanIndexMass.innerHTML = `Индекс массы : ${visit._indexMass}`
+                            break
+                        case '_disease':
+                            let spanDisease = document.createElement('p')
+                            parentDiv.appendChild(spanDisease)
+                            spanDisease.classList.add('more-info')
+                            spanDisease.innerHTML = `Заболевания : ${visit._disease}`
+                            break
+                        case '_lastVisit':
+                            let spanLastVisit = document.createElement('p')
+                            parentDiv.appendChild(spanLastVisit)
+                            spanLastVisit.classList.add('more-info')
+                            spanLastVisit.innerHTML = `Последний визит : ${visit._lastVisit}`
+                            break
+                        case '_comments':
+                            let spanComments = document.createElement('p')
+                            parentDiv.appendChild(spanComments)
+                            spanComments.classList.add('more-info')
+                            spanComments.innerHTML = `Коментарии : ${visit._comments}`
+                            break
+                    }
+                }
+                let spanHideInfo = document.createElement('p')
+                    parentDiv.appendChild(spanHideInfo)
+                    spanHideInfo.classList.add('hide-info')
+                    spanHideInfo.innerText = 'СКРЫТЬ'
+            }
+        })
+    }
+    // Скрыть информацию
+    if ( target.className === 'hide-info' ) {
+        target.parentElement.querySelectorAll('.more-info').forEach((child) => {
+            child.remove()
 
+        })
+
+    }
+})
 
 // Load from Local Storage
 function loadDataLocalSt () {
@@ -193,12 +252,8 @@ function loadDataLocalSt () {
 }
 // Creat cards visit on load from Local Storage
 function creatItemVisitInStart () {
-    if (boardVisit.length === 0) {
-        notFound.classList.remove('not-active')
-    } else {
+    if (boardVisit.length) {
         notFound.classList.add('not-active')
-    }
-    if (localStorage.Board_Visit) {
         boardVisit.forEach((visit) => {
             let divVisit = document.createElement('div')
                 divVisit.classList.add('request')
@@ -216,14 +271,16 @@ function creatItemVisitInStart () {
             spanDoctor.innerHTML = `Доктор : ${visit._doctor}`
             let spanMoreInfo = document.createElement('p')
             divVisit.appendChild(spanMoreInfo)
-            spanMoreInfo.classList.add('more-info')
+            spanMoreInfo.classList.add('show-info')
             spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
         })
+    } else {
+        notFound.classList.remove('not-active')
     }
 }
 //Function reset form
 function resetForm () {
-    request_doctor.classList.remove('active')
+    wrapRequestDoctor.classList.remove('active')
     inputForm.forEach((input) => {
         input.value = ''
     })
@@ -258,6 +315,6 @@ function creatNewCardVisit() {
     spanDoctor.innerHTML = `Доктор : ${doc}`
     let spanMoreInfo = document.createElement('p')
     divVisit.appendChild(spanMoreInfo)
-    spanMoreInfo.classList.add('more-info')
+    spanMoreInfo.classList.add('show-info')
     spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
 }

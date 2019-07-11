@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
 <div class="container">
     <header>
         <a href="#" class="logo"></a>
@@ -23,7 +24,8 @@
     </section>
     </div>
 
-<div class="apply_to_doctor">
+<section class="wrap-form-apply-doctor">
+    <div class="apply_to_doctor">
     <i class="fa fa-times" aria-hidden="true"></i>
     <form class="select-doctor" action="#">
         <select id="select-doctor" name="doctor" >
@@ -32,7 +34,7 @@
             <option value="cardiologist" class="doctor cardiologist" data-doc = "cardiologist">Кардиолог</option>
             <option value="dentist" class="doctor dentist" data-doc = "dentist">Стоматолог</option>
         </select>
-
+    </form>
     <div class="container-for-forms-doctors">
         <label class="form-request form-therapist" data-doc = "therapist" action="#">
             <input class="input-form input-form-therapist surname-therapist" type="text" data-input = "therapist" data-value = "surname" placeholder="Фамилия">
@@ -63,13 +65,8 @@
         </label>
         <span class="btn-creat-request">CREATE AN APPLICATION</span>
     </div>
-    </form>
 </div>
-<script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-</script>
+</section>
 <script src="script/main.js" ></script>
 </body>
 </html>

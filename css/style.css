@@ -102,7 +102,15 @@ header {
     right: 0;
 }
 
-.more-info {
+.show-info {
+    margin-top: 5px;
+    cursor: pointer;
+    text-align: center;
+    color: dodgerblue;
+    font-weight: 900;
+}
+
+.hide-info {
     margin-top: 5px;
     cursor: pointer;
     text-align: center;
@@ -134,8 +142,17 @@ header {
     display: none;
 }
 
-.apply_to_doctor {
+.wrap-form-apply-doctor {
     display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.apply_to_doctor {
+    display: block;
     width: 14%;
     border: 3px solid cadetblue;
     border-radius: 3px;
