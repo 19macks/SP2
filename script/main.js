@@ -8,9 +8,8 @@ const request_doctor = document.querySelector(".apply_to_doctor")
 const wrapRequestDoctor = document.querySelector('.wrap-form-apply-doctor')
 const inputForm = document.querySelectorAll('.input-form')
 const board = document.querySelector('.board')
-const body = document.querySelector('body')
 const notFound = document.querySelector('.not-found ')
-
+let seriaBoard
 
 let active_doctor
 let doc
@@ -27,9 +26,7 @@ let lastVisit
 
 let visit
 let boardVisit = []
-
-let seriaBoard
-
+///////////////////////////////////
 loadDataLocalSt()
 creatItemVisitInStart()
 //////////// C_L_A_S_S ////////////
@@ -64,7 +61,6 @@ class Dentist extends Visit {
         this._lastVisit = lastVisit
     }
 }
-
 
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
@@ -175,13 +171,12 @@ board.addEventListener('click', (event) => {
             notFound.classList.remove('not-active')
         }
     }
-    // Показать больше
-    if ( target.className === 'show-info') {
+    // Скрыть информацию // Показать больше
+    if  ( target.className === 'show-info') {
         boardVisit.forEach((visit) => {
             if ( attribute === visit._idUser) {
                 let parentDiv = target.parentElement
                 for (let key in visit) {
-                    target.remove()
                     switch (key) {
                         case '_visit':
                             let spanPurposeOfVisit = document.createElement('p')
@@ -227,20 +222,19 @@ board.addEventListener('click', (event) => {
                             break
                     }
                 }
-                let spanHideInfo = document.createElement('p')
-                    parentDiv.appendChild(spanHideInfo)
-                    spanHideInfo.classList.add('hide-info')
-                    spanHideInfo.innerText = 'СКРЫТЬ'
             }
         })
-    }
-    // Скрыть информацию
-    if ( target.className === 'hide-info' ) {
+        target.parentElement.appendChild(target)
+        target.innerText = 'СКРЫТЬ'
+        target.classList.remove('show-info')
+        target.classList.add('hide-info')
+    } else if( target.className === 'hide-info' ) {
         target.parentElement.querySelectorAll('.more-info').forEach((child) => {
-            child.remove()
-
+        child.remove()
         })
-
+        target.innerText = 'ПОКАЗАТЬ БОЛЬЩЕ'
+        target.classList.add('show-info')
+        target.classList.remove('hide-info')
     }
 })
 
@@ -278,17 +272,6 @@ function creatItemVisitInStart () {
         notFound.classList.remove('not-active')
     }
 }
-//Function reset form
-function resetForm () {
-    wrapRequestDoctor.classList.remove('active')
-    inputForm.forEach((input) => {
-        input.value = ''
-    })
-    forms.forEach((form) => {
-        form.classList.remove('active')
-    })
-    selectDoctor.value = 'select'
-}
 //Write new visit in arr & Local Storage
 function writeVisitInArrAndLocalSt() {
     boardVisit.push(visit)
@@ -317,4 +300,15 @@ function creatNewCardVisit() {
     divVisit.appendChild(spanMoreInfo)
     spanMoreInfo.classList.add('show-info')
     spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+}
+//Function reset form
+function resetForm () {
+    wrapRequestDoctor.classList.remove('active')
+    inputForm.forEach((input) => {
+        input.value = ''
+    })
+    forms.forEach((form) => {
+        form.classList.remove('active')
+    })
+    selectDoctor.value = 'select'
 }
