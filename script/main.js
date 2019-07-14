@@ -1,7 +1,6 @@
 const btnNewReq = document.querySelector(".button")
 const btnClosed = document.querySelector('.fa-times')
 const btnCreatVisit = document.querySelector('.btn-creat-request')
-const btnShowMore = document.querySelectorAll('.more-info')
 const selectDoctor = document.querySelector('#select-doctor')
 const forms = document.querySelectorAll('.form-request')
 const request_doctor = document.querySelector(".apply_to_doctor")
@@ -29,6 +28,37 @@ let boardVisit = []
 ///////////////////////////////////
 loadDataLocalSt()
 creatItemVisitInStart()
+////////////Drag&Drop//////////////
+// let curentCard
+// let start
+// let shiftX = 0
+// let shiftY = 0
+// let dragStatus = false
+//
+// board.addEventListener('mousedown', (event) => {
+//     if (event.target.className === 'request' || event.target.parentElement.className  === 'board') {
+//         curentCard = event.target
+//         dragStatus = true
+//         let coordinatesX = event.pageX
+//         console.log(coordinatesX);
+//         let coordinatesY = event.pageY
+//         console.log(coordinatesY);
+//         shiftX = event.pageX
+//         console.log(shiftX);
+//         shiftY = event.pageY
+//         console.log(shiftY);
+//         console.log("/////////////////");
+//         curentCard.style.position = 'fixed';
+//         curentCard.style.left = "px(coordinatesX - event.offsetX)";
+//         curentCard.style.top = px(coordinatesY - event.offsetY);
+//
+//
+//     }
+// })
+
+
+
+
 //////////// C_L_A_S_S ////////////
 class Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments) {
@@ -237,6 +267,28 @@ board.addEventListener('click', (event) => {
         target.classList.remove('hide-info')
     }
 })
+//Обработчик собітий доски Drag & Drop
+board.addEventListener('dragover', function (event) {
+    event.preventDefault ()
+    event.dataTransfer.dropEffect = 'move'
+})
+board.addEventListener('drop', function (event) {
+
+    let dragVisit = board.querySelector('.dragstart')
+    dragVisit.style.height = '118px'
+
+    dragVisit.style.position = 'absolute'
+    dragVisit.style.top = `${event.pageY -360}px`
+    dragVisit.style.left = `${event.pageX - 363}px`
+
+
+    // dragVisit.style.top = `${(event.pageY - dragVisit.offsetWidth / 2) -300}px`
+    // dragVisit.style.left = `${(event.pageX - dragVisit.offsetWidth / 2)- 403}px`
+
+    // dragVisit.style.top = `${event.pageY -300}px`
+    // dragVisit.style.left = `${event.pageX - 403}px`
+
+})
 
 // Load from Local Storage
 function loadDataLocalSt () {
@@ -251,6 +303,7 @@ function creatItemVisitInStart () {
         boardVisit.forEach((visit) => {
             let divVisit = document.createElement('div')
                 divVisit.classList.add('request')
+                divVisit.setAttribute('draggable', 'true')
                 divVisit.setAttribute('data-user', `${visit._userSurname}${visit._userName}`)
                 board.appendChild(divVisit)
                 divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
@@ -267,6 +320,23 @@ function creatItemVisitInStart () {
             divVisit.appendChild(spanMoreInfo)
             spanMoreInfo.classList.add('show-info')
             spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+
+            divVisit.addEventListener('dragstart', function(event) {
+                this.classList.add('dragstart')
+                console.log('START');
+            })
+            divVisit.addEventListener('dragend', function(event) {
+                this.classList.remove('dragstart')
+                console.log('END');
+
+                // let coordinateX = event.pageX
+                // let coordinateY = event.pageY
+                //
+                // this.style.position = 'absolute'
+                // this.style.top = `${coordinateY - 337}px`
+                // this.style.left = `${coordinateX - 238}px`
+
+            })
         })
     } else {
         notFound.classList.remove('not-active')
@@ -283,7 +353,7 @@ function creatNewCardVisit() {
     notFound.classList.add('not-active')
     let divVisit = document.createElement('div')
     divVisit.classList.add('request')
-
+    divVisit.setAttribute('draggable', 'true')
     board.appendChild(divVisit)
     divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
     let spanSurnameUser = document.createElement('p')

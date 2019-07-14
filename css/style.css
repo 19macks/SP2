@@ -56,6 +56,7 @@ header {
 .board {
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 
     margin: 0 auto;
     width: 700px;
@@ -93,7 +94,7 @@ header {
 }
 
 .request > p {
-    margin: 0 0 10px;
+    margin: 10px;
 }
 
 .request-closed {
