@@ -26,7 +26,6 @@ let lastVisit
 let visitTherapist
 let visitCardiologist
 let visitDentist
-
 let boardVisit = []
 ///////////////////////////////////
 loadDataLocalSt()
@@ -42,47 +41,26 @@ class Visit {
         this._comments = comments
     }
 
-    creatItemVisitInStart () {
+    static creatItemVisitInStart () {
         if (boardVisit.length) {
             notFound.classList.add('not-active')
             boardVisit.forEach((visit) => {
-                console.log(visit);
-                let divVisit = document.createElement('div')
-                divVisit.classList.add('request')
-                divVisit.setAttribute('data-user', `${visit._userSurname}${visit._userName}`)
-                divVisit.setAttribute('data-doc', visit._doctor)
-                board.appendChild(divVisit)
-                divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
-                let spanSurnameUser = document.createElement('p')
-                divVisit.appendChild(spanSurnameUser)
-                spanSurnameUser.innerHTML = `Фамилия : ${visit._userSurname}`
-                let spanNameUser = document.createElement('p')
-                divVisit.appendChild(spanNameUser)
-                spanNameUser.innerHTML = `Имя : ${visit._userName}`
-                let spanDoctor = document.createElement('p')
-                divVisit.appendChild(spanDoctor)
-                spanDoctor.innerHTML = `Доктор : ${visit._doctor}`
-                let spanMoreInfo = document.createElement('p')
-                divVisit.appendChild(spanMoreInfo)
-                spanMoreInfo.classList.add('show-info')
-                spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
 
-                divVisit.addEventListener('dragstart', function(event) {
-                    this.classList.add('dragstart')
-                    console.log('START');
-                })
-                divVisit.addEventListener('dragend', function(event) {
-                    this.classList.remove('dragstart')
-                    console.log('END');
-
-                    // let coordinateX = event.pageX
-                    // let coordinateY = event.pageY
-                    //
-                    // this.style.position = 'absolute'
-                    // this.style.top = `${coordinateY - 337}px`
-                    // this.style.left = `${coordinateX - 238}px`
-
-                })
+                const {_doctor: doc, _userSurname: surname, _userName: name, _userPatronymic: patronymic, _visit: purposeOfVisit, _age: age, _pressure: heart_pressure, _indexMass: index_mass, _disease: disease, _lastVisit: lastVisit,  _comments: comments = ''} = visit
+                switch (doc) {
+                    case "Терапевт":
+                        visitTherapist = new Therapist(doc, surname, name, patronymic, purposeOfVisit, comments, age)
+                        visitTherapist.creatNewCardVisit()
+                        break
+                    case "Кардиолог":
+                        visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heart_pressure, index_mass, disease)
+                        visitCardiologist.creatNewCardVisit()
+                        break
+                    case "Стоматолог":
+                        visitDentist = new Dentist(doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit)
+                        visitDentist.creatNewCardVisit()
+                        break
+                }
             })
         } else {
             notFound.classList.remove('not-active')
@@ -94,6 +72,7 @@ class Visit {
         divVisit.classList.add('request')
         divVisit.setAttribute('data-user', `${this._userSurname}${this._userName}`)
         divVisit.setAttribute('data-doc', this._doctor)
+        divVisit.setAttribute('draggable', true)
         board.appendChild(divVisit)
         divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
         let spanSurnameUser = document.createElement('p')
@@ -110,11 +89,43 @@ class Visit {
         divVisit.appendChild(spanMoreInfo)
         spanMoreInfo.classList.add('show-info')
         spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+
+
+        divVisit.addEventListener('dragstart', function(event) {
+            this.classList.add('dragstart')
+            console.log('START');
+        })
+
+        divVisit.addEventListener('drag', function(event) {
+
+            console.log('X - ', event.pageX);
+            console.log('Y - ', event.pageY);
+        })
+
+        board.addEventListener('click', function(event) {
+
+            console.dir(board);
+            console.dir(event.pageX);
+            console.dir(event.pageY);
+        })
+
+        divVisit.addEventListener('dragend', function(event) {
+            this.classList.remove('dragstart')
+
+            let coordinateX = event.pageX  - board.offsetLeft + (divVisit.offsetWidth-event.pageX  - board.offsetLeft)
+            let coordinateY = event.pageY- board.offsetTop + (divVisit.offsetHeight-event.pageY  - board.offsetTop)
+            console.dir(divVisit);
+
+
+
+            this.style.position = 'absolute'
+            this.style.top = `${coordinateY}px`
+            this.style.left = `${coordinateX}px`
+        })
+
+
     }
 }
-let visitInstance = new Visit()
-visitInstance.creatItemVisitInStart()
-
 class Therapist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
@@ -124,19 +135,19 @@ class Therapist extends Visit {
         let parentDiv = target.parentElement
 
         let spanPurposeOfVisit = document.createElement('p')
-            parentDiv.appendChild(spanPurposeOfVisit)
-            spanPurposeOfVisit.classList.add('more-info')
-            spanPurposeOfVisit.innerHTML = `Цель визита : ${visitTherapist._visit}`
+        parentDiv.appendChild(spanPurposeOfVisit)
+        spanPurposeOfVisit.classList.add('more-info')
+        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitTherapist._visit}`
 
         let spanAge = document.createElement('p')
-            parentDiv.appendChild(spanAge)
-            spanAge.classList.add('more-info')
-            spanAge.innerHTML = `Возраст : ${visitTherapist._age}`
+        parentDiv.appendChild(spanAge)
+        spanAge.classList.add('more-info')
+        spanAge.innerHTML = `Возраст : ${visitTherapist._age}`
 
         let spanComments = document.createElement('p')
-            parentDiv.appendChild(spanComments)
-            spanComments.classList.add('more-info')
-            spanComments.innerHTML = `Коментарии : ${visitTherapist._comments}`
+        parentDiv.appendChild(spanComments)
+        spanComments.classList.add('more-info')
+        spanComments.innerHTML = `Коментарии : ${visitTherapist._comments}`
     }
 }
 class Cardiologist extends Visit {
@@ -150,29 +161,29 @@ class Cardiologist extends Visit {
         let parentDiv = target.parentElement
 
         let spanPurposeOfVisit = document.createElement('p')
-            parentDiv.appendChild(spanPurposeOfVisit)
-            spanPurposeOfVisit.classList.add('more-info')
-            spanPurposeOfVisit.innerHTML = `Цель визита : ${visitCardiologist._visit}`
+        parentDiv.appendChild(spanPurposeOfVisit)
+        spanPurposeOfVisit.classList.add('more-info')
+        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitCardiologist._visit}`
         let spanAge = document.createElement('p')
-            parentDiv.appendChild(spanAge)
-            spanAge.classList.add('more-info')
-            spanAge.innerHTML = `Возраст : ${visitCardiologist._age}`
+        parentDiv.appendChild(spanAge)
+        spanAge.classList.add('more-info')
+        spanAge.innerHTML = `Возраст : ${visitCardiologist._age}`
         let spanPressure = document.createElement('p')
-            parentDiv.appendChild(spanPressure)
-            spanPressure.classList.add('more-info')
-            spanPressure.innerHTML = `Обычное давление : ${visitCardiologist._pressure}`
+        parentDiv.appendChild(spanPressure)
+        spanPressure.classList.add('more-info')
+        spanPressure.innerHTML = `Обычное давление : ${visitCardiologist._pressure}`
         let spanIndexMass = document.createElement('p')
-            parentDiv.appendChild(spanIndexMass)
-            spanIndexMass.classList.add('more-info')
-            spanIndexMass.innerHTML = `Индекс массы : ${visitCardiologist._indexMass}`
+        parentDiv.appendChild(spanIndexMass)
+        spanIndexMass.classList.add('more-info')
+        spanIndexMass.innerHTML = `Индекс массы : ${visitCardiologist._indexMass}`
         let spanDisease = document.createElement('p')
-            parentDiv.appendChild(spanDisease)
-            spanDisease.classList.add('more-info')
-            spanDisease.innerHTML = `Заболевания : ${visitCardiologist._disease}`
+        parentDiv.appendChild(spanDisease)
+        spanDisease.classList.add('more-info')
+        spanDisease.innerHTML = `Заболевания : ${visitCardiologist._disease}`
         let spanComments = document.createElement('p')
-            parentDiv.appendChild(spanComments)
-            spanComments.classList.add('more-info')
-            spanComments.innerHTML = `Коментарии : ${visitCardiologist._comments}`
+        parentDiv.appendChild(spanComments)
+        spanComments.classList.add('more-info')
+        spanComments.innerHTML = `Коментарии : ${visitCardiologist._comments}`
     }
 }
 class Dentist extends Visit {
@@ -181,22 +192,24 @@ class Dentist extends Visit {
         this._lastVisit = lastVisit
     }
     showMoreInfo (target){
-    let parentDiv = target.parentElement
-    let spanPurposeOfVisit = document.createElement('p')
-    parentDiv.appendChild(spanPurposeOfVisit)
-    spanPurposeOfVisit.classList.add('more-info')
-    spanPurposeOfVisit.innerHTML = `Цель визита : ${visitDentist._visit}`
-    let spanLastVisit = document.createElement('p')
-    parentDiv.appendChild(spanLastVisit)
-    spanLastVisit.classList.add('more-info')
-    spanLastVisit.innerHTML = `Последний визит : ${visitDentist._lastVisit}`
-    let spanComments = document.createElement('p')
-    parentDiv.appendChild(spanComments)
-    spanComments.classList.add('more-info')
-    spanComments.innerHTML = `Коментарии : ${visitDentist._comments}`
-}
+        let parentDiv = target.parentElement
+        let spanPurposeOfVisit = document.createElement('p')
+        parentDiv.appendChild(spanPurposeOfVisit)
+        spanPurposeOfVisit.classList.add('more-info')
+        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitDentist._visit}`
+        let spanLastVisit = document.createElement('p')
+        parentDiv.appendChild(spanLastVisit)
+        spanLastVisit.classList.add('more-info')
+        spanLastVisit.innerHTML = `Последний визит : ${visitDentist._lastVisit}`
+        let spanComments = document.createElement('p')
+        parentDiv.appendChild(spanComments)
+        spanComments.classList.add('more-info')
+        spanComments.innerHTML = `Коментарии : ${visitDentist._comments}`
+    }
 }
 
+
+Visit.creatItemVisitInStart()
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
     if (request_doctor.getAttribute('class') === "apply_to_doctor" ) {
@@ -208,7 +221,7 @@ btnNewReq.addEventListener('click', () => {
 //Закрыть форму выбора врача по клику рядом с обнулением инпутов
 wrapRequestDoctor.addEventListener('click', (event) => {
     if (event.currentTarget === event.target)
-    resetForm()
+        resetForm()
 })
 //Закрыть форму выбора врача крестиком с обнулением инпутов
 btnClosed.addEventListener('click', function () {
@@ -245,7 +258,7 @@ btnCreatVisit.addEventListener('click', () => {
         if (surname && name && patronymic && age && purposeOfVisit !== false) {
             visitTherapist = new Therapist(doc, surname, name, patronymic, purposeOfVisit, comments, age)
             boardVisit.push(visitTherapist)
-            writeVisitInArrAndLocalSt()
+            writeVisitInLocalSt()
             visitTherapist.creatNewCardVisit()
             resetForm()
         } else {
@@ -266,7 +279,7 @@ btnCreatVisit.addEventListener('click', () => {
         if (surname && name && patronymic && age && purposeOfVisit && heartPressure && indexMass && disease !== false) {
             visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heartPressure, indexMass, disease)
             boardVisit.push(visitCardiologist)
-            writeVisitInArrAndLocalSt()
+            writeVisitInLocalSt()
             visitCardiologist.creatNewCardVisit()
             resetForm()
         } else {
@@ -284,7 +297,7 @@ btnCreatVisit.addEventListener('click', () => {
         if (surname && name && patronymic && lastVisit && purposeOfVisit !== false) {
             visitDentist = new Dentist (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit)
             boardVisit.push(visitDentist)
-            writeVisitInArrAndLocalSt()
+            writeVisitInLocalSt()
             visitDentist.creatNewCardVisit()
             resetForm()
         } else {
@@ -316,22 +329,22 @@ board.addEventListener('click', ({target}) => {
         switch (target.parentElement.getAttribute('data-doc')) {
             case 'Терапевт':
                 visitTherapist.showMoreInfo(target)
-            break
+                break
             case 'Кардиолог':
                 visitCardiologist.showMoreInfo(target)
                 break
             case 'Стоматолог':
                 visitDentist.showMoreInfo(target)
-            break
+                break
         }
-    console.log(target);
+        console.log(target);
         target.parentElement.appendChild(target)
         target.innerText = 'СКРЫТЬ'
         target.classList.remove('show-info')
         target.classList.add('hide-info')
     } else if( target.className === 'hide-info' ) {
         target.parentElement.querySelectorAll('.more-info').forEach((child) => {
-        child.remove()
+            child.remove()
         })
         target.innerText = 'ПОКАЗАТЬ БОЛЬЩЕ'
         target.classList.add('show-info')
@@ -345,7 +358,7 @@ function loadDataLocalSt () {
     }
 }
 //Write new visit in Local Storage
-function writeVisitInArrAndLocalSt() {
+function writeVisitInLocalSt() {
     seriaBoard = JSON.stringify(boardVisit)
     localStorage.setItem("Board_Visit", seriaBoard)
 }
@@ -360,4 +373,3 @@ function resetForm () {
     })
     selectDoctor.value = 'select'
 }
-
