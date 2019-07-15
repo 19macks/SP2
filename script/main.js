@@ -23,42 +23,13 @@ let indexMass
 let disease
 let lastVisit
 
-let visit
+let visitTherapist
+let visitCardiologist
+let visitDentist
+
 let boardVisit = []
 ///////////////////////////////////
 loadDataLocalSt()
-creatItemVisitInStart()
-////////////Drag&Drop//////////////
-// let curentCard
-// let start
-// let shiftX = 0
-// let shiftY = 0
-// let dragStatus = false
-//
-// board.addEventListener('mousedown', (event) => {
-//     if (event.target.className === 'request' || event.target.parentElement.className  === 'board') {
-//         curentCard = event.target
-//         dragStatus = true
-//         let coordinatesX = event.pageX
-//         console.log(coordinatesX);
-//         let coordinatesY = event.pageY
-//         console.log(coordinatesY);
-//         shiftX = event.pageX
-//         console.log(shiftX);
-//         shiftY = event.pageY
-//         console.log(shiftY);
-//         console.log("/////////////////");
-//         curentCard.style.position = 'fixed';
-//         curentCard.style.left = "px(coordinatesX - event.offsetX)";
-//         curentCard.style.top = px(coordinatesY - event.offsetY);
-//
-//
-//     }
-// })
-
-
-
-
 //////////// C_L_A_S_S ////////////
 class Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments) {
@@ -70,11 +41,102 @@ class Visit {
         this._visit = purposeOfVisit
         this._comments = comments
     }
+
+    creatItemVisitInStart () {
+        if (boardVisit.length) {
+            notFound.classList.add('not-active')
+            boardVisit.forEach((visit) => {
+                console.log(visit);
+                let divVisit = document.createElement('div')
+                divVisit.classList.add('request')
+                divVisit.setAttribute('data-user', `${visit._userSurname}${visit._userName}`)
+                divVisit.setAttribute('data-doc', visit._doctor)
+                board.appendChild(divVisit)
+                divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
+                let spanSurnameUser = document.createElement('p')
+                divVisit.appendChild(spanSurnameUser)
+                spanSurnameUser.innerHTML = `Фамилия : ${visit._userSurname}`
+                let spanNameUser = document.createElement('p')
+                divVisit.appendChild(spanNameUser)
+                spanNameUser.innerHTML = `Имя : ${visit._userName}`
+                let spanDoctor = document.createElement('p')
+                divVisit.appendChild(spanDoctor)
+                spanDoctor.innerHTML = `Доктор : ${visit._doctor}`
+                let spanMoreInfo = document.createElement('p')
+                divVisit.appendChild(spanMoreInfo)
+                spanMoreInfo.classList.add('show-info')
+                spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+
+                divVisit.addEventListener('dragstart', function(event) {
+                    this.classList.add('dragstart')
+                    console.log('START');
+                })
+                divVisit.addEventListener('dragend', function(event) {
+                    this.classList.remove('dragstart')
+                    console.log('END');
+
+                    // let coordinateX = event.pageX
+                    // let coordinateY = event.pageY
+                    //
+                    // this.style.position = 'absolute'
+                    // this.style.top = `${coordinateY - 337}px`
+                    // this.style.left = `${coordinateX - 238}px`
+
+                })
+            })
+        } else {
+            notFound.classList.remove('not-active')
+        }
+    }
+    creatNewCardVisit() {
+        notFound.classList.add('not-active')
+        let divVisit = document.createElement('div')
+        divVisit.classList.add('request')
+        divVisit.setAttribute('data-user', `${this._userSurname}${this._userName}`)
+        divVisit.setAttribute('data-doc', this._doctor)
+        board.appendChild(divVisit)
+        divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
+        let spanSurnameUser = document.createElement('p')
+        divVisit.appendChild(spanSurnameUser)
+        divVisit.setAttribute('data-user', `${this._userSurname}${this._userName}`)
+        spanSurnameUser.innerHTML = `Фамилия : ${this._userSurname}`
+        let spanNameUser = document.createElement('p')
+        divVisit.appendChild(spanNameUser)
+        spanNameUser.innerHTML = `Имя : ${this._userName}`
+        let spanDoctor = document.createElement('p')
+        divVisit.appendChild(spanDoctor)
+        spanDoctor.innerHTML = `Доктор : ${this._doctor}`
+        let spanMoreInfo = document.createElement('p')
+        divVisit.appendChild(spanMoreInfo)
+        spanMoreInfo.classList.add('show-info')
+        spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
+    }
 }
+let visitInstance = new Visit()
+visitInstance.creatItemVisitInStart()
+
 class Therapist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
         this._age = age
+    }
+    showMoreInfo (target) {
+        let parentDiv = target.parentElement
+
+        let spanPurposeOfVisit = document.createElement('p')
+            parentDiv.appendChild(spanPurposeOfVisit)
+            spanPurposeOfVisit.classList.add('more-info')
+            spanPurposeOfVisit.innerHTML = `Цель визита : ${visitTherapist._visit}`
+
+        let spanAge = document.createElement('p')
+            parentDiv.appendChild(spanAge)
+            spanAge.classList.add('more-info')
+            spanAge.innerHTML = `Возраст : ${visitTherapist._age}`
+
+        let spanComments = document.createElement('p')
+            parentDiv.appendChild(spanComments)
+            spanComments.classList.add('more-info')
+            spanComments.innerHTML = `Коментарии : ${visitTherapist._comments}`
     }
 }
 class Cardiologist extends Visit {
@@ -84,12 +146,55 @@ class Cardiologist extends Visit {
         this._indexMass = index_mass
         this._disease = disease
     }
+    showMoreInfo (target) {
+        let parentDiv = target.parentElement
+
+        let spanPurposeOfVisit = document.createElement('p')
+            parentDiv.appendChild(spanPurposeOfVisit)
+            spanPurposeOfVisit.classList.add('more-info')
+            spanPurposeOfVisit.innerHTML = `Цель визита : ${visitCardiologist._visit}`
+        let spanAge = document.createElement('p')
+            parentDiv.appendChild(spanAge)
+            spanAge.classList.add('more-info')
+            spanAge.innerHTML = `Возраст : ${visitCardiologist._age}`
+        let spanPressure = document.createElement('p')
+            parentDiv.appendChild(spanPressure)
+            spanPressure.classList.add('more-info')
+            spanPressure.innerHTML = `Обычное давление : ${visitCardiologist._pressure}`
+        let spanIndexMass = document.createElement('p')
+            parentDiv.appendChild(spanIndexMass)
+            spanIndexMass.classList.add('more-info')
+            spanIndexMass.innerHTML = `Индекс массы : ${visitCardiologist._indexMass}`
+        let spanDisease = document.createElement('p')
+            parentDiv.appendChild(spanDisease)
+            spanDisease.classList.add('more-info')
+            spanDisease.innerHTML = `Заболевания : ${visitCardiologist._disease}`
+        let spanComments = document.createElement('p')
+            parentDiv.appendChild(spanComments)
+            spanComments.classList.add('more-info')
+            spanComments.innerHTML = `Коментарии : ${visitCardiologist._comments}`
+    }
 }
 class Dentist extends Visit {
-    constructor (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit) {
+    constructor(doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
         this._lastVisit = lastVisit
     }
+    showMoreInfo (target){
+    let parentDiv = target.parentElement
+    let spanPurposeOfVisit = document.createElement('p')
+    parentDiv.appendChild(spanPurposeOfVisit)
+    spanPurposeOfVisit.classList.add('more-info')
+    spanPurposeOfVisit.innerHTML = `Цель визита : ${visitDentist._visit}`
+    let spanLastVisit = document.createElement('p')
+    parentDiv.appendChild(spanLastVisit)
+    spanLastVisit.classList.add('more-info')
+    spanLastVisit.innerHTML = `Последний визит : ${visitDentist._lastVisit}`
+    let spanComments = document.createElement('p')
+    parentDiv.appendChild(spanComments)
+    spanComments.classList.add('more-info')
+    spanComments.innerHTML = `Коментарии : ${visitDentist._comments}`
+}
 }
 
 //Активировать форму выбора врача
@@ -138,9 +243,10 @@ btnCreatVisit.addEventListener('click', () => {
         comments = document.querySelector('.comments-therapist').value
 
         if (surname && name && patronymic && age && purposeOfVisit !== false) {
-            visit = new Therapist(doc, surname, name, patronymic, purposeOfVisit, comments, age)
+            visitTherapist = new Therapist(doc, surname, name, patronymic, purposeOfVisit, comments, age)
+            boardVisit.push(visitTherapist)
             writeVisitInArrAndLocalSt()
-            creatNewCardVisit()
+            visitTherapist.creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
@@ -158,9 +264,10 @@ btnCreatVisit.addEventListener('click', () => {
         comments = document.querySelector('.comments-cardiologist').value
 
         if (surname && name && patronymic && age && purposeOfVisit && heartPressure && indexMass && disease !== false) {
-            visit = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heartPressure, indexMass, disease)
+            visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heartPressure, indexMass, disease)
+            boardVisit.push(visitCardiologist)
             writeVisitInArrAndLocalSt()
-            creatNewCardVisit()
+            visitCardiologist.creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
@@ -175,9 +282,10 @@ btnCreatVisit.addEventListener('click', () => {
         comments = document.querySelector('.comments-dentist').value
 
         if (surname && name && patronymic && lastVisit && purposeOfVisit !== false) {
-            visit = new Dentist (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit)
+            visitDentist = new Dentist (doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit)
+            boardVisit.push(visitDentist)
             writeVisitInArrAndLocalSt()
-            creatNewCardVisit()
+            visitDentist.creatNewCardVisit()
             resetForm()
         } else {
             alert ('Заполните все поля')
@@ -185,10 +293,8 @@ btnCreatVisit.addEventListener('click', () => {
     }
     return boardVisit
 })
-//Обработчик событий доски (карточек)
-board.addEventListener('click', (event) => {
-    let target = event.target
-    let attribute = target.parentElement.getAttribute('data-user')
+// Удаляем крестиком карточку визита
+board.addEventListener('click', ({target}) => {
     // Удаляем крестиком карточку визита
     if ( target.tagName === 'I' ) {
         boardVisit = boardVisit.filter((visit) => {
@@ -201,59 +307,24 @@ board.addEventListener('click', (event) => {
             notFound.classList.remove('not-active')
         }
     }
-    // Скрыть информацию // Показать больше
+})
+// Скрыть информацию // Показать больше
+board.addEventListener('click', ({target}) => {
     if  ( target.className === 'show-info') {
-        boardVisit.forEach((visit) => {
-            if ( attribute === visit._idUser) {
-                let parentDiv = target.parentElement
-                for (let key in visit) {
-                    switch (key) {
-                        case '_visit':
-                            let spanPurposeOfVisit = document.createElement('p')
-                            parentDiv.appendChild(spanPurposeOfVisit)
-                            spanPurposeOfVisit.classList.add('more-info')
-                            spanPurposeOfVisit.innerHTML = `Цель визита : ${visit._visit}`
-                            break
-                        case '_age':
-                            let spanAge = document.createElement('p')
-                            parentDiv.appendChild(spanAge)
-                            spanAge.classList.add('more-info')
-                            spanAge.innerHTML = `Возраст : ${visit._age}`
-                            break
-                        case '_pressure':
-                            let spanPressure = document.createElement('p')
-                            parentDiv.appendChild(spanPressure)
-                            spanPressure.classList.add('more-info')
-                            spanPressure.innerHTML = `Обычное давление : ${visit._pressure}`
-                            break
-                        case '_indexMass':
-                            let spanIndexMass = document.createElement('p')
-                            parentDiv.appendChild(spanIndexMass)
-                            spanIndexMass.classList.add('more-info')
-                            spanIndexMass.innerHTML = `Индекс массы : ${visit._indexMass}`
-                            break
-                        case '_disease':
-                            let spanDisease = document.createElement('p')
-                            parentDiv.appendChild(spanDisease)
-                            spanDisease.classList.add('more-info')
-                            spanDisease.innerHTML = `Заболевания : ${visit._disease}`
-                            break
-                        case '_lastVisit':
-                            let spanLastVisit = document.createElement('p')
-                            parentDiv.appendChild(spanLastVisit)
-                            spanLastVisit.classList.add('more-info')
-                            spanLastVisit.innerHTML = `Последний визит : ${visit._lastVisit}`
-                            break
-                        case '_comments':
-                            let spanComments = document.createElement('p')
-                            parentDiv.appendChild(spanComments)
-                            spanComments.classList.add('more-info')
-                            spanComments.innerHTML = `Коментарии : ${visit._comments}`
-                            break
-                    }
-                }
-            }
-        })
+        console.log(target.parentElement.getAttribute('data-doc'));
+        console.log(target);
+        switch (target.parentElement.getAttribute('data-doc')) {
+            case 'Терапевт':
+                visitTherapist.showMoreInfo(target)
+            break
+            case 'Кардиолог':
+                visitCardiologist.showMoreInfo(target)
+                break
+            case 'Стоматолог':
+                visitDentist.showMoreInfo(target)
+            break
+        }
+    console.log(target);
         target.parentElement.appendChild(target)
         target.innerText = 'СКРЫТЬ'
         target.classList.remove('show-info')
@@ -267,109 +338,16 @@ board.addEventListener('click', (event) => {
         target.classList.remove('hide-info')
     }
 })
-//Обработчик собітий доски Drag & Drop
-board.addEventListener('dragover', function (event) {
-    event.preventDefault ()
-    event.dataTransfer.dropEffect = 'move'
-})
-board.addEventListener('drop', function (event) {
-
-    let dragVisit = board.querySelector('.dragstart')
-    dragVisit.style.height = '118px'
-
-    dragVisit.style.position = 'absolute'
-    dragVisit.style.top = `${event.pageY -360}px`
-    dragVisit.style.left = `${event.pageX - 363}px`
-
-
-    // dragVisit.style.top = `${(event.pageY - dragVisit.offsetWidth / 2) -300}px`
-    // dragVisit.style.left = `${(event.pageX - dragVisit.offsetWidth / 2)- 403}px`
-
-    // dragVisit.style.top = `${event.pageY -300}px`
-    // dragVisit.style.left = `${event.pageX - 403}px`
-
-})
-
 // Load from Local Storage
 function loadDataLocalSt () {
     if (localStorage.Board_Visit) {
         boardVisit = JSON.parse(localStorage.getItem('Board_Visit'))
     }
 }
-// Creat cards visit on load from Local Storage
-function creatItemVisitInStart () {
-    if (boardVisit.length) {
-        notFound.classList.add('not-active')
-        boardVisit.forEach((visit) => {
-            let divVisit = document.createElement('div')
-                divVisit.classList.add('request')
-                divVisit.setAttribute('draggable', 'true')
-                divVisit.setAttribute('data-user', `${visit._userSurname}${visit._userName}`)
-                board.appendChild(divVisit)
-                divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
-            let spanSurnameUser = document.createElement('p')
-                divVisit.appendChild(spanSurnameUser)
-                spanSurnameUser.innerHTML = `Фамилия : ${visit._userSurname}`
-            let spanNameUser = document.createElement('p')
-                divVisit.appendChild(spanNameUser)
-                spanNameUser.innerHTML = `Имя : ${visit._userName}`
-            let spanDoctor = document.createElement('p')
-            divVisit.appendChild(spanDoctor)
-            spanDoctor.innerHTML = `Доктор : ${visit._doctor}`
-            let spanMoreInfo = document.createElement('p')
-            divVisit.appendChild(spanMoreInfo)
-            spanMoreInfo.classList.add('show-info')
-            spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
-
-            divVisit.addEventListener('dragstart', function(event) {
-                this.classList.add('dragstart')
-                console.log('START');
-            })
-            divVisit.addEventListener('dragend', function(event) {
-                this.classList.remove('dragstart')
-                console.log('END');
-
-                // let coordinateX = event.pageX
-                // let coordinateY = event.pageY
-                //
-                // this.style.position = 'absolute'
-                // this.style.top = `${coordinateY - 337}px`
-                // this.style.left = `${coordinateX - 238}px`
-
-            })
-        })
-    } else {
-        notFound.classList.remove('not-active')
-    }
-}
-//Write new visit in arr & Local Storage
+//Write new visit in Local Storage
 function writeVisitInArrAndLocalSt() {
-    boardVisit.push(visit)
     seriaBoard = JSON.stringify(boardVisit)
     localStorage.setItem("Board_Visit", seriaBoard)
-}
-//Creat new visit
-function creatNewCardVisit() {
-    notFound.classList.add('not-active')
-    let divVisit = document.createElement('div')
-    divVisit.classList.add('request')
-    divVisit.setAttribute('draggable', 'true')
-    board.appendChild(divVisit)
-    divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
-    let spanSurnameUser = document.createElement('p')
-    divVisit.appendChild(spanSurnameUser)
-    divVisit.setAttribute('data-user', `${surname}${name}`)
-    spanSurnameUser.innerHTML = `Фамилия : ${surname}`
-    let spanNameUser = document.createElement('p')
-    divVisit.appendChild(spanNameUser)
-    spanNameUser.innerHTML = `Имя : ${name}`
-    let spanDoctor = document.createElement('p')
-    divVisit.appendChild(spanDoctor)
-    spanDoctor.innerHTML = `Доктор : ${doc}`
-    let spanMoreInfo = document.createElement('p')
-    divVisit.appendChild(spanMoreInfo)
-    spanMoreInfo.classList.add('show-info')
-    spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
 }
 //Function reset form
 function resetForm () {
@@ -382,3 +360,4 @@ function resetForm () {
     })
     selectDoctor.value = 'select'
 }
+
