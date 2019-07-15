@@ -43,47 +43,49 @@
         </select>
     </form>
     <div class="container-for-form">
-        <label class="form-request form-therapist" action="#">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Возраст">
-            <input type="text" placeholder="Цель визита">
-            <textarea class="input-form comments" placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
-        </label>
-        <label class="form-request form-cardiologist">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Возраст">
-            <input type="text" placeholder="Цель визита">
-            <input type="text" placeholder="Обычное давление">
-            <input type="text" placeholder="Индекс массы тела">
-            <input type="text" placeholder="Перенесенные заболевания ССС">
-            <textarea class="input-form comments" placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
-        </label>
-        <label class="form-request form-dentist">
-            <input type="text" placeholder="Фамилия">
-            <input type="text" placeholder="Имя">
-            <input type="text" placeholder="Отчество">
-            <input type="text" placeholder="Дата последнего посещения">
-            <input type="text" placeholder="Цель визита">
-            <textarea class="input-form comments" placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
-        </label>
-        <span class="btn-creat-request">CREATE AN APPLICATION</span>
+            <label class="form-request form-therapist">
+                <input type="text" class="input-form form-therapist surname-therapist" required placeholder="Фамилия">
+                <input type="text" class="input-form form-therapist name-therapist" required placeholder="Имя">
+                <input type="text" class="input-form form-therapist patronymic-therapist" required placeholder="Отчество">
+                <input type="text" class="input-form form-therapist age-therapist" required placeholder="Возраст">
+                <input type="text" class="input-form form-therapist date-therapist" required placeholder="Дата визита">
+                <input type="text" class="input-form form-therapist purpose-therapist" required placeholder="Цель визита">
+                <textarea class="input-form comments-therapist form-therapist " placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
+            </label>
+
+            <label class="form-request form-cardiologist">
+                <input type="text" class="input-form form-cardiologist surname-cardiologist" required placeholder="Фамилия">
+                <input type="text" class="input-form form-cardiologist name-cardiologist" required placeholder="Имя">
+                <input type="text" class="input-form form-cardiologist patronymic-cardiologist" required placeholder="Отчество">
+                <input type="text" class="input-form form-cardiologist age-cardiologist" required placeholder="Возраст">
+                <input type="text" class="input-form form-cardiologist date-cardiologist" required placeholder="Дата визита">
+                <input type="text" class="input-form form-cardiologist purpose-cardiologist" required placeholder="Цель визита">
+                <input type="text" class="input-form form-cardiologist pressure-cardiologist" required placeholder="Обычное давление">
+                <input type="text" class="input-form form-cardiologist bmi-cardiologist" required placeholder="Индекс массы тела">
+                <input type="text" class="input-form form-cardiologist diseasesCS-cardiologist" required placeholder="Перенесенные заболевания ССС">
+                <textarea class="input-form comments-cardiologist form-cardiologist" placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
+            </label>
+
+            <label class="form-request form-dentist">
+                <input type="text" class="input-form form-dentist surname-dentist" required placeholder="Фамилия">
+                <input type="text" class="input-form form-dentist name-dentist" required placeholder="Имя">
+                <input type="text" class="input-form form-dentist patronymic-dentist" required placeholder="Отчество">
+                <input type="text" class="input-form form-dentist date-dentist" required placeholder="Дата визита">
+                <input type="text" class="input-form form-dentist lastVisit-dentist" required placeholder="Дата последнего посещения">
+                <input type="text" class="input-form form-dentist purpose-dentist" required placeholder="Цель визита">
+                <textarea class="input-form comments form-dentist comments-dentist" placeholder="Ваши комментраии" type="text" rows="4" maxlength="400"></textarea>
+            </label>
+        <div class="btn-creat-request">Отправить</div>
     </div>
-
-
-
 
 </div>
 
 
-<script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-</script>
+<!--<script-->
+<!--        src="https://code.jquery.com/jquery-3.4.1.min.js"-->
+<!--        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="-->
+<!--        crossorigin="anonymous">-->
+<!--</script>-->
 <script src="script/main.js" ></script>
 </body>
 </html>
