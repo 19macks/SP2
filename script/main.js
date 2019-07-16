@@ -90,42 +90,33 @@ class Visit {
         spanMoreInfo.classList.add('show-info')
         spanMoreInfo.innerText = 'ПОКАЗАТЬ БОЛЬШЕ'
 
-
-        divVisit.addEventListener('dragstart', function(event) {
-            this.classList.add('dragstart')
-            console.log('START');
+        divVisit.addEventListener('dragstart', (event) => {
+            event.target.classList.add('drag-card')
         })
 
-        divVisit.addEventListener('drag', function(event) {
 
-            console.log('X - ', event.pageX);
-            console.log('Y - ', event.pageY);
-        })
-
-        board.addEventListener('click', function(event) {
-
-            console.dir(board);
-            console.dir(event.pageX);
-            console.dir(event.pageY);
-        })
 
         divVisit.addEventListener('dragend', function(event) {
-            this.classList.remove('dragstart')
-
-            let coordinateX = event.pageX  - board.offsetLeft + (divVisit.offsetWidth-event.pageX  - board.offsetLeft)
-            let coordinateY = event.pageY- board.offsetTop + (divVisit.offsetHeight-event.pageY  - board.offsetTop)
-            console.dir(divVisit);
-
-
-
-            this.style.position = 'absolute'
-            this.style.top = `${coordinateY}px`
-            this.style.left = `${coordinateX}px`
+            this.classList.remove('drag-card')
         })
-
-
     }
 }
+
+board.addEventListener('dragover', (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+})
+board.addEventListener('drop', (event) => {
+    let dropCard = board.querySelector('.drag-card')
+    let coordinateX = event.pageX - (dropCard.offsetWidth / 2 + 16)
+    let coordinateY = event.pageY - (dropCard.offsetHeight / 2)
+    dropCard.style.position = 'absolute'
+    dropCard.style.top = `${coordinateY}px`
+    dropCard.style.left = `${coordinateX}px`
+    console.dir('dropCard');
+})
+
+
 class Therapist extends Visit {
     constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
         super(doc, surname, name, patronymic, purposeOfVisit, comments)
@@ -184,6 +175,7 @@ class Cardiologist extends Visit {
         parentDiv.appendChild(spanComments)
         spanComments.classList.add('more-info')
         spanComments.innerHTML = `Коментарии : ${visitCardiologist._comments}`
+
     }
 }
 class Dentist extends Visit {
@@ -325,7 +317,7 @@ board.addEventListener('click', ({target}) => {
 board.addEventListener('click', ({target}) => {
     if  ( target.className === 'show-info') {
         console.log(target.parentElement.getAttribute('data-doc'));
-        console.log(target);
+        // target.parentElement.style.height = "100%"
         switch (target.parentElement.getAttribute('data-doc')) {
             case 'Терапевт':
                 visitTherapist.showMoreInfo(target)
