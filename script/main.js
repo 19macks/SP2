@@ -40,12 +40,10 @@ class Visit {
         this._visit = purposeOfVisit
         this._comments = comments
     }
-
     static creatItemVisitInStart () {
         if (boardVisit.length) {
             notFound.classList.add('not-active')
             boardVisit.forEach((visit) => {
-
                 const {_doctor: doc, _userSurname: surname, _userName: name, _userPatronymic: patronymic, _visit: purposeOfVisit, _age: age, _pressure: heart_pressure, _indexMass: index_mass, _disease: disease, _lastVisit: lastVisit,  _comments: comments = ''} = visit
                 switch (doc) {
                     case "Терапевт":
@@ -53,7 +51,7 @@ class Visit {
                         visitTherapist.creatNewCardVisit()
                         break
                     case "Кардиолог":
-                        visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heart_pressure, index_mass, disease)
+                        visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, age, heart_pressure, index_mass, disease)
                         visitCardiologist.creatNewCardVisit()
                         break
                     case "Стоматолог":
@@ -77,7 +75,6 @@ class Visit {
         divVisit.innerHTML = ' <i class="request-closed fa fa-times" aria-hidden="true"></i>'
         let spanSurnameUser = document.createElement('p')
         divVisit.appendChild(spanSurnameUser)
-        divVisit.setAttribute('data-user', `${this._userSurname}${this._userName}`)
         spanSurnameUser.innerHTML = `Фамилия : ${this._userSurname}`
         let spanNameUser = document.createElement('p')
         divVisit.appendChild(spanNameUser)
@@ -93,15 +90,107 @@ class Visit {
         divVisit.addEventListener('dragstart', (event) => {
             event.target.classList.add('drag-card')
         })
-
-
-
         divVisit.addEventListener('dragend', function(event) {
             this.classList.remove('drag-card')
         })
     }
 }
+class Therapist extends Visit {
+    constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
+        super(doc, surname, name, patronymic, purposeOfVisit, comments)
+        this._age = age
+    }
+    showMoreInfo (target) {
+        boardVisit.forEach((visit) => {
+            if (target.parentElement.getAttribute('data-user') === visit._idUser) {
+                let parentDiv = target.parentElement
 
+                let spanPurposeOfVisit = document.createElement('p')
+                parentDiv.appendChild(spanPurposeOfVisit)
+                spanPurposeOfVisit.classList.add('more-info')
+                spanPurposeOfVisit.innerHTML = `Цель визита : ${visit._visit}`
+
+                let spanAge = document.createElement('p')
+                parentDiv.appendChild(spanAge)
+                spanAge.classList.add('more-info')
+                spanAge.innerHTML = `Возраст : ${visit._age}`
+
+                let spanComments = document.createElement('p')
+                parentDiv.appendChild(spanComments)
+                spanComments.classList.add('more-info')
+                spanComments.innerHTML = `Коментарии : ${visit._comments}`
+            }
+        })
+
+    }
+}
+class Cardiologist extends Visit {
+    constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age, heart_pressure, index_mass, disease) {
+        super(doc, surname, name, patronymic, purposeOfVisit, comments)
+        this._pressure = heart_pressure
+        this._age = age
+        this._indexMass = index_mass
+        this._disease = disease
+    }
+    showMoreInfo (target) {
+        boardVisit.forEach((visit) => {
+            if (target.parentElement.getAttribute('data-user') === visit._idUser) {
+                let parentDiv = target.parentElement
+
+                let spanPurposeOfVisit = document.createElement('p')
+                parentDiv.appendChild(spanPurposeOfVisit)
+                spanPurposeOfVisit.classList.add('more-info')
+                spanPurposeOfVisit.innerHTML = `Цель визита : ${visit._visit}`
+                let spanAge = document.createElement('p')
+                parentDiv.appendChild(spanAge)
+                spanAge.classList.add('more-info')
+                spanAge.innerHTML = `Возраст : ${visit._age}`
+                let spanPressure = document.createElement('p')
+                parentDiv.appendChild(spanPressure)
+                spanPressure.classList.add('more-info')
+                spanPressure.innerHTML = `Обычное давление : ${visit._pressure}`
+                let spanIndexMass = document.createElement('p')
+                parentDiv.appendChild(spanIndexMass)
+                spanIndexMass.classList.add('more-info')
+                spanIndexMass.innerHTML = `Индекс массы : ${visit._indexMass}`
+                let spanDisease = document.createElement('p')
+                parentDiv.appendChild(spanDisease)
+                spanDisease.classList.add('more-info')
+                spanDisease.innerHTML = `Заболевания : ${visit._disease}`
+                let spanComments = document.createElement('p')
+                parentDiv.appendChild(spanComments)
+                spanComments.classList.add('more-info')
+                spanComments.innerHTML = `Коментарии : ${visit._comments}`
+            }
+        })
+    }
+}
+class Dentist extends Visit {
+    constructor(doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit) {
+        super(doc, surname, name, patronymic, purposeOfVisit, comments)
+        this._lastVisit = lastVisit
+    }
+    showMoreInfo (target){
+        boardVisit.forEach((visit) => {
+            if (target.parentElement.getAttribute('data-user') === visit._idUser) {
+                let parentDiv = target.parentElement
+                let spanPurposeOfVisit = document.createElement('p')
+                parentDiv.appendChild(spanPurposeOfVisit)
+                spanPurposeOfVisit.classList.add('more-info')
+                spanPurposeOfVisit.innerHTML = `Цель визита : ${visit._visit}`
+                let spanLastVisit = document.createElement('p')
+                parentDiv.appendChild(spanLastVisit)
+                spanLastVisit.classList.add('more-info')
+                spanLastVisit.innerHTML = `Последний визит : ${visit._lastVisit}`
+                let spanComments = document.createElement('p')
+                parentDiv.appendChild(spanComments)
+                spanComments.classList.add('more-info')
+                spanComments.innerHTML = `Коментарии : ${visit._comments}`
+            }
+        })
+    }
+}
+////////Drag & Drop///////////
 board.addEventListener('dragover', (event) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
@@ -113,94 +202,8 @@ board.addEventListener('drop', (event) => {
     dropCard.style.position = 'absolute'
     dropCard.style.top = `${coordinateY}px`
     dropCard.style.left = `${coordinateX}px`
-    console.dir('dropCard');
 })
-
-
-class Therapist extends Visit {
-    constructor (doc, surname, name, patronymic, purposeOfVisit, comments, age ) {
-        super(doc, surname, name, patronymic, purposeOfVisit, comments)
-        this._age = age
-    }
-    showMoreInfo (target) {
-        let parentDiv = target.parentElement
-
-        let spanPurposeOfVisit = document.createElement('p')
-        parentDiv.appendChild(spanPurposeOfVisit)
-        spanPurposeOfVisit.classList.add('more-info')
-        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitTherapist._visit}`
-
-        let spanAge = document.createElement('p')
-        parentDiv.appendChild(spanAge)
-        spanAge.classList.add('more-info')
-        spanAge.innerHTML = `Возраст : ${visitTherapist._age}`
-
-        let spanComments = document.createElement('p')
-        parentDiv.appendChild(spanComments)
-        spanComments.classList.add('more-info')
-        spanComments.innerHTML = `Коментарии : ${visitTherapist._comments}`
-    }
-}
-class Cardiologist extends Visit {
-    constructor (doc, surname, name, patronymic, purposeOfVisit, comments, heart_pressure, index_mass, disease) {
-        super(doc, surname, name, patronymic, purposeOfVisit, comments)
-        this._pressure = heart_pressure
-        this._indexMass = index_mass
-        this._disease = disease
-    }
-    showMoreInfo (target) {
-        let parentDiv = target.parentElement
-
-        let spanPurposeOfVisit = document.createElement('p')
-        parentDiv.appendChild(spanPurposeOfVisit)
-        spanPurposeOfVisit.classList.add('more-info')
-        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitCardiologist._visit}`
-        let spanAge = document.createElement('p')
-        parentDiv.appendChild(spanAge)
-        spanAge.classList.add('more-info')
-        spanAge.innerHTML = `Возраст : ${visitCardiologist._age}`
-        let spanPressure = document.createElement('p')
-        parentDiv.appendChild(spanPressure)
-        spanPressure.classList.add('more-info')
-        spanPressure.innerHTML = `Обычное давление : ${visitCardiologist._pressure}`
-        let spanIndexMass = document.createElement('p')
-        parentDiv.appendChild(spanIndexMass)
-        spanIndexMass.classList.add('more-info')
-        spanIndexMass.innerHTML = `Индекс массы : ${visitCardiologist._indexMass}`
-        let spanDisease = document.createElement('p')
-        parentDiv.appendChild(spanDisease)
-        spanDisease.classList.add('more-info')
-        spanDisease.innerHTML = `Заболевания : ${visitCardiologist._disease}`
-        let spanComments = document.createElement('p')
-        parentDiv.appendChild(spanComments)
-        spanComments.classList.add('more-info')
-        spanComments.innerHTML = `Коментарии : ${visitCardiologist._comments}`
-
-    }
-}
-class Dentist extends Visit {
-    constructor(doc, surname, name, patronymic, purposeOfVisit, comments, lastVisit) {
-        super(doc, surname, name, patronymic, purposeOfVisit, comments)
-        this._lastVisit = lastVisit
-    }
-    showMoreInfo (target){
-        let parentDiv = target.parentElement
-        let spanPurposeOfVisit = document.createElement('p')
-        parentDiv.appendChild(spanPurposeOfVisit)
-        spanPurposeOfVisit.classList.add('more-info')
-        spanPurposeOfVisit.innerHTML = `Цель визита : ${visitDentist._visit}`
-        let spanLastVisit = document.createElement('p')
-        parentDiv.appendChild(spanLastVisit)
-        spanLastVisit.classList.add('more-info')
-        spanLastVisit.innerHTML = `Последний визит : ${visitDentist._lastVisit}`
-        let spanComments = document.createElement('p')
-        parentDiv.appendChild(spanComments)
-        spanComments.classList.add('more-info')
-        spanComments.innerHTML = `Коментарии : ${visitDentist._comments}`
-    }
-}
-
-
+/////////////////////////////
 Visit.creatItemVisitInStart()
 //Активировать форму выбора врача
 btnNewReq.addEventListener('click', () => {
@@ -254,9 +257,10 @@ btnCreatVisit.addEventListener('click', () => {
             visitTherapist.creatNewCardVisit()
             resetForm()
         } else {
-            alert ('Заполните все поля')
+            alert('Заполните все поля')
         }
-    } else if (active_doctor === 'cardiologist') {
+    }
+    if (active_doctor === 'cardiologist') {
         doc = "Кардиолог"
         surname = document.querySelector('.surname-cardiologist').value
         name = document.querySelector('.name-cardiologist').value
@@ -269,15 +273,16 @@ btnCreatVisit.addEventListener('click', () => {
         comments = document.querySelector('.comments-cardiologist').value
 
         if (surname && name && patronymic && age && purposeOfVisit && heartPressure && indexMass && disease !== false) {
-            visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, heartPressure, indexMass, disease)
+            visitCardiologist = new Cardiologist(doc, surname, name, patronymic, purposeOfVisit, comments, age, heartPressure, indexMass, disease)
             boardVisit.push(visitCardiologist)
             writeVisitInLocalSt()
             visitCardiologist.creatNewCardVisit()
             resetForm()
         } else {
-            alert ('Заполните все поля')
+            alert('Заполните все поля')
         }
-    } else if (active_doctor === 'dentist') {
+    }
+    if (active_doctor === 'dentist') {
         doc = "Стоматолог"
         surname = document.querySelector('.surname-dentist').value
         name = document.querySelector('.name-dentist').value
@@ -300,24 +305,20 @@ btnCreatVisit.addEventListener('click', () => {
 })
 // Удаляем крестиком карточку визита
 board.addEventListener('click', ({target}) => {
-    // Удаляем крестиком карточку визита
     if ( target.tagName === 'I' ) {
         boardVisit = boardVisit.filter((visit) => {
             return visit._idUser !== (target.parentElement.getAttribute('data-user'))
         })
         target.parentElement.remove()
-        seriaBoard = JSON.stringify(boardVisit)
-        localStorage.setItem("Board_Visit", seriaBoard)
+        writeVisitInLocalSt()
         if (boardVisit.length === 0) {
             notFound.classList.remove('not-active')
         }
     }
 })
-// Скрыть информацию // Показать больше
+// Скрыть & Показать инфо
 board.addEventListener('click', ({target}) => {
     if  ( target.className === 'show-info') {
-        console.log(target.parentElement.getAttribute('data-doc'));
-        // target.parentElement.style.height = "100%"
         switch (target.parentElement.getAttribute('data-doc')) {
             case 'Терапевт':
                 visitTherapist.showMoreInfo(target)
@@ -329,7 +330,6 @@ board.addEventListener('click', ({target}) => {
                 visitDentist.showMoreInfo(target)
                 break
         }
-        console.log(target);
         target.parentElement.appendChild(target)
         target.innerText = 'СКРЫТЬ'
         target.classList.remove('show-info')
