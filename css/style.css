@@ -57,7 +57,7 @@ header {
 
 .not-found {
     margin: auto;
-    display: block;
+    display: none;
     color: grey;
     font-size: 21px;
     font-family: cursive;

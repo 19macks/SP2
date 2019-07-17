@@ -7,6 +7,7 @@ let inputs = document.querySelectorAll(".input-form");
 let cardiologistForms = document.querySelectorAll(".form-cardiologist");
 let therapistForms = document.querySelectorAll(".form-therapist");
 let dentistForm = document.querySelectorAll(".form-dentist");
+let card = [];
 
 closeButton.onclick = function () {
     resetForm();
@@ -66,26 +67,28 @@ select.onchange = function () {
 
 ////// C L A S S E S /////////
 class Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose) {
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment) {
         this._doc = doctor;
         this._userName = name;
         this._userSurname = surname;
         this._userPatronymic = patronymic;
         this._currentDate = dateOfVisit;
         this._target = purpose;
+        this._comment = comment;
     }
+
 }
 
 class Therapist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, age) {
-        super (doctor, name, surname, patronymic, dateOfVisit, purpose);
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age) {
+        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
         this._userAge = age;
     }
 }
 
 class Cardiologist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, pressure, bmi, diseasesCS, age) {
-        super (doctor, name, surname, patronymic, dateOfVisit, purpose);
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age) {
+        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
         this._userPressure = pressure;
         this._userBMI = bmi;
         this._userDiseasesCS = diseasesCS;
@@ -94,8 +97,8 @@ class Cardiologist extends Visit {
 }
 
 class Dentist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, lastVisit) {
-        super(doctor, name, surname, patronymic, dateOfVisit, purpose);
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit) {
+        super(doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
         this._lastvis = lastVisit;
     }
 }
@@ -108,12 +111,15 @@ requestButton.onclick = function () {
         let patronymic = document.querySelector(".patronymic-therapist").value;
         let dateOfVisit = document.querySelector(".date-therapist").value;
         let purpose = document.querySelector(".purpose-therapist").value;
+        let comment = document.querySelector(".comments-therapist").value;
         let age = document.querySelector(".age-therapist").value;
         if (name && surname && patronymic && dateOfVisit && purpose && age !== false) {
-            let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, age);
-            console.log(visitTherapist);
+            spanHide();
+            let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
+            card.push(visitTherapist);
+
         } else {
-            alert("Заполните все поля!");
+            alert("Для создания карточки необходимо заполните все поля!");
         }
     } else if (select.value === "cardiologist") {
         let doctor = "Кардиолог";
@@ -122,12 +128,34 @@ requestButton.onclick = function () {
         let patronymic = document.querySelector(".patronymic-cardiologist").value;
         let dateOfVisit = document.querySelector(".date-cardiologist").value;
         let purpose = document.querySelector(".purpose-cardiologist").value;
+        let comment = document.querySelector(".comments-cardiologist").value;
         let pressure = document.querySelector(".pressure-cardiologist").value;
         let bmi  = document.querySelector(".bmi-cardiologist").value;
         let diseasesCS = document.querySelector(".diseasesCS-cardiologist").value;
         let age = document.querySelector(".age-cardiologist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && pressure && bmi && diseasesCS && age !== false) {
+            spanHide();
+            let VisitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
+            card.push(VisitCardiologist);
 
+        } else {
+            alert("Для создания карточки необходимо заполните все поля!");
+        }
+    } else if (select.value === "dentist") {
+        let doctor = "Стоматолог";
+        let name = document.querySelector(".name-dentist").value;
+        let surname = document.querySelector(".surname-dentist").value;
+        let patronymic = document.querySelector(".patronymic-dentist").value;
+        let dateOfVisit = document.querySelector(".date-dentist").value;
+        let purpose = document.querySelector(".purpose-dentist").value;
+        let comment = document.querySelector(".comments-dentist").value;
+        let lastVisit = document.querySelector(".lastVisit-dentist").value;
+        if (doctor && name && surname && patronymic && dateOfVisit && purpose && lastVisit !== false) {
+            let VisitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
+            spanHide();
+            console.log(VisitDentist);
+        } else {
+            alert("Для создания карточки необходимо заполните все поля!");
         }
     }
 };
@@ -147,6 +175,12 @@ function resetForm() {
     select.value = "select_doctor";
     document.querySelector(".container-for-form").classList.remove("active");
 }
+
+function spanHide() {
+    document.querySelector(".not-found").classList.remove("active");
+}
+
+
 
 
 
