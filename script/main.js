@@ -14,21 +14,24 @@ closeButton.onclick = function () {
 
 document.body.addEventListener("click", function (event) {
     let target = event.target;
-    console.log(target);
-
     while (target.tagName !== 'BODY') {
         if (target === form) {
             form.classList.add("active");
             return;
         }
         else if (target === button) {
-            inputs.forEach(function (form) {
-                form.value = "";
-            });
-            select.value = "select_doctor";
-            document.querySelector(".container-for-form").classList.remove("active");
-            form.classList.add("active");
-            return;
+            if (form.classList.contains("active")) {
+                form.classList.remove("active");
+                return;
+            } else {
+                inputs.forEach(function (form) {
+                    form.value = "";
+                });
+                select.value = "select_doctor";
+                document.querySelector(".container-for-form").classList.remove("active");
+                form.classList.add("active");
+                return;
+            }
         }
         else if (target === closeButton) {
             form.classList.remove("active");
@@ -109,6 +112,22 @@ requestButton.onclick = function () {
         if (name && surname && patronymic && dateOfVisit && purpose && age !== false) {
             let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, age);
             console.log(visitTherapist);
+        } else {
+            alert("Заполните все поля!");
+        }
+    } else if (select.value === "cardiologist") {
+        let doctor = "Кардиолог";
+        let name = document.querySelector(".name-cardiologist").value;
+        let surname = document.querySelector(".surname-cardiologist").value;
+        let patronymic = document.querySelector(".patronymic-cardiologist").value;
+        let dateOfVisit = document.querySelector(".date-cardiologist").value;
+        let purpose = document.querySelector(".purpose-cardiologist").value;
+        let pressure = document.querySelector(".pressure-cardiologist").value;
+        let bmi  = document.querySelector(".bmi-cardiologist").value;
+        let diseasesCS = document.querySelector(".diseasesCS-cardiologist").value;
+        let age = document.querySelector(".age-cardiologist").value;
+        if (doctor && name && surname && patronymic && dateOfVisit && purpose && pressure && bmi && diseasesCS && age !== false) {
+
         }
     }
 };
