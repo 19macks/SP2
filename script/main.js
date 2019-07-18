@@ -4,10 +4,11 @@ let form = document.querySelector(".apply_to_doctor");
 let select = document.getElementById('select');
 let requestButton = document.querySelector(".btn-creat-request");
 let inputs = document.querySelectorAll(".input-form");
+let board = document.querySelector(".board");
 let cardiologistForms = document.querySelectorAll(".form-cardiologist");
 let therapistForms = document.querySelectorAll(".form-therapist");
 let dentistForm = document.querySelectorAll(".form-dentist");
-let card = [];
+let VisitsArray = [];
 
 closeButton.onclick = function () {
     resetForm();
@@ -76,6 +77,21 @@ class Visit {
         this._target = purpose;
         this._comment = comment;
     }
+    createCard() {
+        let newCard = document.createElement("div");
+        board.appendChild(newCard);
+        newCard.classList.add("card");
+        newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
+        createElemInCard(newCard, `Имя: ${this._userName}`);
+        createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
+        createElemInCard(newCard, `Доктор: ${this._doc}`);
+        // let spanName = document.createElement("p");
+        //         // newCard.appendChild(spanName);
+        //         // spanName.innerHTML = `Фамилия: ${this._userName}`;
+        //         // let spanSurname = document.createElement("p");
+        //         // newCard.appendChild(spanSurname);
+        //         // spanName.innerHTML = `Имя: ${this._userName}`;
+    }
 
 }
 
@@ -114,9 +130,11 @@ requestButton.onclick = function () {
         let comment = document.querySelector(".comments-therapist").value;
         let age = document.querySelector(".age-therapist").value;
         if (name && surname && patronymic && dateOfVisit && purpose && age !== false) {
-            spanHide();
+            notFoundSpan_Hide();
             let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
-            card.push(visitTherapist);
+            VisitsArray.push(visitTherapist);
+            visitTherapist.createCard();
+
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -134,9 +152,9 @@ requestButton.onclick = function () {
         let diseasesCS = document.querySelector(".diseasesCS-cardiologist").value;
         let age = document.querySelector(".age-cardiologist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && pressure && bmi && diseasesCS && age !== false) {
-            spanHide();
+            notFoundSpan_Hide();
             let VisitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
-            card.push(VisitCardiologist);
+            VisitsArray.push(VisitCardiologist);
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -151,9 +169,9 @@ requestButton.onclick = function () {
         let comment = document.querySelector(".comments-dentist").value;
         let lastVisit = document.querySelector(".lastVisit-dentist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && lastVisit !== false) {
+            notFoundSpan_Hide();
             let VisitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
-            spanHide();
-            console.log(VisitDentist);
+
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
         }
@@ -176,8 +194,14 @@ function resetForm() {
     document.querySelector(".container-for-form").classList.remove("active");
 }
 
-function spanHide() {
+function notFoundSpan_Hide() {
     document.querySelector(".not-found").classList.remove("active");
+}
+
+function createElemInCard (card, innerText) {
+  let paragraph = document.createElement("p");
+    paragraph.innerText = innerText;
+  card.appendChild(paragraph)
 }
 
 
