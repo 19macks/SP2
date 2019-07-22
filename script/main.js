@@ -8,7 +8,7 @@ let board = document.querySelector(".board");
 let cardiologistForms = document.querySelectorAll(".form-cardiologist");
 let therapistForms = document.querySelectorAll(".form-therapist");
 let dentistForm = document.querySelectorAll(".form-dentist");
-let VisitsArray = [];
+let visitsArray = [];
 
 closeButton.onclick = function () {
     resetForm();
@@ -132,7 +132,7 @@ requestButton.onclick = function () {
         if (name && surname && patronymic && dateOfVisit && purpose && age !== false) {
             notFoundSpan_Hide();
             let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
-            VisitsArray.push(visitTherapist);
+            visitsArray.push(visitTherapist);
             visitTherapist.createCard();
 
 
@@ -153,8 +153,9 @@ requestButton.onclick = function () {
         let age = document.querySelector(".age-cardiologist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && pressure && bmi && diseasesCS && age !== false) {
             notFoundSpan_Hide();
-            let VisitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
-            VisitsArray.push(VisitCardiologist);
+            let visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
+            visitsArray.push(visitCardiologist);
+            visitCardiologist.createCard()
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -170,7 +171,9 @@ requestButton.onclick = function () {
         let lastVisit = document.querySelector(".lastVisit-dentist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && lastVisit !== false) {
             notFoundSpan_Hide();
-            let VisitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
+            let visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
+            visitsArray.push(visitDentist);
+            visitDentist.createCard()
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");

@@ -46,13 +46,17 @@ header {
 .board {
     display: flex;
     flex-wrap: wrap;
-
     margin: 0 auto;
     width: 700px;
     height: 350px;
-
+    justify-content: space-between;
     border: 1px solid dodgerblue;
     background-color: white;
+}
+
+.card {
+    display: inline-block;
+    background-color: cornflowerblue;
 }
 
 .not-found {
