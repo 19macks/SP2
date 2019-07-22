@@ -57,6 +57,16 @@ header {
 .card {
     display: inline-block;
     background-color: cornflowerblue;
+    position: relative;
+}
+
+.transparent_block {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .not-found {
@@ -78,6 +88,12 @@ header {
 
 .form-therapist {
     display: none;
+}
+
+.close_card {
+    display: inline-block;
+    position: absolute;
+    right: 6px;
 }
 
 .form-cardiologist {

@@ -1,50 +1,36 @@
 let button = document.querySelector(".button");
-let closeButton = document.querySelector(".close_button");
+let closeForm = document.querySelector(".close_button");
+let closeCard = document.querySelector(".close_card");
+
 let form = document.querySelector(".apply_to_doctor");
+let transparentBlock = document.querySelector(".transparent_block");
 let select = document.getElementById('select');
 let requestButton = document.querySelector(".btn-creat-request");
 let inputs = document.querySelectorAll(".input-form");
 let board = document.querySelector(".board");
-let cardiologistForms = document.querySelectorAll(".form-cardiologist");
-let therapistForms = document.querySelectorAll(".form-therapist");
-let dentistForm = document.querySelectorAll(".form-dentist");
 let visitsArray = [];
 
-closeButton.onclick = function () {
-    resetForm();
+button.onclick = function () {
+    inputs.forEach(function (form) {
+        form.value = "";
+    });
+    select.value = "select_doctor";
+    document.querySelector(".container-for-form").classList.remove("active");
+    transparentBlock.classList.add("active");
+    form.classList.add("active");
+};
+transparentBlock.onclick = function (event) {
+    let currentTarget = event.target;
+    if (currentTarget.classList.contains("transparent_block")) {
+        closeTheForm();
+        transparentBlock.classList.remove("active");
+    }
 };
 
-document.body.addEventListener("click", function (event) {
-    let target = event.target;
-    while (target.tagName !== 'BODY') {
-        if (target === form) {
-            form.classList.add("active");
-            return;
-        }
-        else if (target === button) {
-            if (form.classList.contains("active")) {
-                form.classList.remove("active");
-                return;
-            } else {
-                inputs.forEach(function (form) {
-                    form.value = "";
-                });
-                select.value = "select_doctor";
-                document.querySelector(".container-for-form").classList.remove("active");
-                form.classList.add("active");
-                return;
-            }
-        }
-        else if (target === closeButton) {
-            form.classList.remove("active");
-            return;
-        }
-        else {
-            form.classList.remove("active")
-        }
-        target = target.parentNode;
-    }
-});
+closeForm.onclick = function() {
+    closeTheForm();
+    transparentBlock.classList.remove("active");
+};
 
 select.onchange = function () {
     if (this.value === "therapist")  {
@@ -81,18 +67,31 @@ class Visit {
         let newCard = document.createElement("div");
         board.appendChild(newCard);
         newCard.classList.add("card");
+
+        let closeCard = document.createElement("div");
+        newCard.appendChild(closeCard);
+        closeCard.innerHTML = ("<i class=\"fas fa-times\"></i>");
+        closeCard.classList.add("close_card");
+
+
+        board.addEventListener("click", function (event) {
+            let currentTarget = event.target;
+            console.log(currentTarget.tagName);
+            if (currentTarget.tagName === "I") {
+                let targetParen =  currentTarget.parentElement;
+                targetParen.parentElement.remove();
+            }
+        });
+
         newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
         createElemInCard(newCard, `Имя: ${this._userName}`);
         createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
         createElemInCard(newCard, `Доктор: ${this._doc}`);
-        // let spanName = document.createElement("p");
-        //         // newCard.appendChild(spanName);
-        //         // spanName.innerHTML = `Фамилия: ${this._userName}`;
-        //         // let spanSurname = document.createElement("p");
-        //         // newCard.appendChild(spanSurname);
-        //         // spanName.innerHTML = `Имя: ${this._userName}`;
+        createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
+        createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
+        createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
+        createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
     }
-
 }
 
 class Therapist extends Visit {
@@ -179,6 +178,7 @@ requestButton.onclick = function () {
             alert("Для создания карточки необходимо заполните все поля!");
         }
     }
+    form.classList.remove("active");
 };
 
 
@@ -189,14 +189,6 @@ function removeActiveOfFormRequest() {
     });
 }
 
-function resetForm() {
-    inputs.forEach(function (form) {
-        form.value = "";
-    });
-    select.value = "select_doctor";
-    document.querySelector(".container-for-form").classList.remove("active");
-}
-
 function notFoundSpan_Hide() {
     document.querySelector(".not-found").classList.remove("active");
 }
@@ -204,7 +196,22 @@ function notFoundSpan_Hide() {
 function createElemInCard (card, innerText) {
   let paragraph = document.createElement("p");
     paragraph.innerText = innerText;
-  card.appendChild(paragraph)
+  card.appendChild(paragraph);
+}
+
+function createHiddenElemInCard(card, innerText) {
+    let paragraph = document.createElement("p");
+    paragraph.classList.add("show_more");
+    paragraph.innerText = innerText;
+    card.appendChild(paragraph);
+}
+
+function closeTheForm() {
+    inputs.forEach(function (form) {
+        form.value = "";
+    });
+    select.value = "select_doctor";
+    form.classList.remove("active");
 }
 
 
