@@ -179,6 +179,7 @@ requestButton.onclick = function () {
         }
     }
     form.classList.remove("active");
+    transparentBlock.classList.remove("active");
 };
 
 
@@ -194,9 +195,9 @@ function notFoundSpan_Hide() {
 }
 
 function createElemInCard (card, innerText) {
-  let paragraph = document.createElement("p");
+    let paragraph = document.createElement("p");
     paragraph.innerText = innerText;
-  card.appendChild(paragraph);
+    card.appendChild(paragraph);
 }
 
 function createHiddenElemInCard(card, innerText) {
@@ -213,11 +214,3 @@ function closeTheForm() {
     select.value = "select_doctor";
     form.classList.remove("active");
 }
-
-
-
-
-
-
-
-
