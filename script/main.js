@@ -76,29 +76,34 @@ class Visit {
 
         board.addEventListener("click", function (event) {
             let currentTarget = event.target;
-            console.log(currentTarget.tagName);
             if (currentTarget.tagName === "I") {
                 let targetParen =  currentTarget.parentElement;
                 targetParen.parentElement.remove();
             }
         });
-
         newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
         createElemInCard(newCard, `Имя: ${this._userName}`);
         createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
         createElemInCard(newCard, `Доктор: ${this._doc}`);
-        createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
-        createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
-        createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
-        createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
+        let showMoreButton = document.createElement("p");
+        showMoreButton.innerText = "Показать больше";
+        showMoreButton.classList.add("showMoreButton");
+        newCard.appendChild(showMoreButton);
+        // createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
+        // createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
+        // createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
+        // createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
     }
 }
 
 class Therapist extends Visit {
     constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age) {
-        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
+        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment,);
         this._userAge = age;
     }
+    // showMore(target) {
+    //     board.forEach()
+    // }
 }
 
 class Cardiologist extends Visit {
@@ -213,4 +218,12 @@ function closeTheForm() {
     });
     select.value = "select_doctor";
     form.classList.remove("active");
+}
+
+board.onclick = function (event) {
+    let currentTarget = event.target;
+    if (currentTarget.className === "showMoreButton") {
+        currentTarget.style.display = "none";
+
+    }
 }
