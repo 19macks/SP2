@@ -13,7 +13,6 @@ let visitTherapist;
 let visitCardiologist;
 let visitDentist;
 let newCard;
-let hiddenElemInCard = [];
 
 ////// C L A S S E S /////////
 class Visit {
@@ -69,15 +68,16 @@ class Therapist extends Visit {
     showMore(target) {
         visitsArray.forEach((visitsArrayObj) => {
             if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
-                createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
-                createHiddenElemInCard(newCard, `Дата рождения: ${this._userAge}`);
-                createHiddenElemInCard(newCard, `Дата визита: ${this._currentDate}`);
-                createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
-                createHiddenElemInCard(newCard, `Комментарий: ${this._comment}`);
+                let parentDiv = target.parentElement;
+                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Дата рождения: ${visitsArrayObj._userAge}`);
+                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
                 let hideTextButton = document.createElement("p");
                 hideTextButton.innerText = "СКРЫТЬ";
                 hideTextButton.classList.add("hideTextButton");
-                newCard.appendChild(hideTextButton);
+                parentDiv.appendChild(hideTextButton);
             }
         })
     }
@@ -91,12 +91,48 @@ class Cardiologist extends Visit {
         this._userDiseasesCS = diseasesCS;
         this._age = age;
     }
+    showMore(target) {
+        visitsArray.forEach((visitsArrayObj) => {
+            if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
+                let parentDiv = target.parentElement;
+
+                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Дата рождения: ${visitsArrayObj._age}`);
+                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Давление: ${visitsArrayObj._userPressure}`);
+                createHiddenElemInCard(parentDiv, `Индекс массы тела: ${visitsArrayObj._userBMI}`);
+                createHiddenElemInCard(parentDiv, `Перенесенные заболевания ССС: ${visitsArrayObj._userDiseasesCS}`);
+                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
+                let hideTextButton = document.createElement("p");
+                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.classList.add("hideTextButton");
+                parentDiv.appendChild(hideTextButton);
+            }
+        })
+    }
 }
 
 class Dentist extends Visit {
     constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit) {
         super(doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
         this._lastvis = lastVisit;
+    }
+    showMore(target) {
+        visitsArray.forEach((visitsArrayObj) => {
+            if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
+                let parentDiv = target.parentElement;
+                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Дата последнего визита: ${visitsArrayObj._lastvis}`);
+                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
+                let hideTextButton = document.createElement("p");
+                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.classList.add("hideTextButton");
+                parentDiv.appendChild(hideTextButton);
+            }
+        })
     }
 }
 
@@ -229,13 +265,13 @@ board.onclick = function ({target}) {
         }
     } else if (target.className === "hideTextButton") {
         target.style.display = "none";
-        hiddenElemInCard.forEach((elem) => {
-            elem.style.display = "none";
-            document.querySelector(".showMoreButton").style.display = "block"
+        target.parentElement.querySelectorAll(".hidden_element").forEach((elem) => {
+            elem.remove();
+            target.parentElement.querySelector(".showMoreButton").style.display = "block"
         })
 
     }
-}
+};
 
 
 /////// F U N C T I O N S /////////
@@ -258,9 +294,9 @@ function createElemInCard (card, innerText) {
 function createHiddenElemInCard(card, innerText) {
     let paragraph = document.createElement("p");
     paragraph.innerText = innerText;
-    // paragraph.classList.add("hidden_element")
+    paragraph.classList.add("hidden_element");
     card.appendChild(paragraph);
-    hiddenElemInCard.push(paragraph);
+
 }
 
 function closeTheForm() {
