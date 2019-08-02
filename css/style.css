@@ -107,6 +107,12 @@ header {
     cursor: pointer;
 }
 
+.hideTextButton {
+    color: darkred;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .form-dentist {
     display: none;
 }

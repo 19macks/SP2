@@ -9,6 +9,98 @@ let requestButton = document.querySelector(".btn-creat-request");
 let inputs = document.querySelectorAll(".input-form");
 let board = document.querySelector(".board");
 let visitsArray = [];
+let visitTherapist;
+let visitCardiologist;
+let visitDentist;
+let newCard;
+let hiddenElemInCard = [];
+
+////// C L A S S E S /////////
+class Visit {
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment) {
+        this._idUser = `${name}${surname}`;
+        this._doc = doctor;
+        this._userName = name;
+        this._userSurname = surname;
+        this._userPatronymic = patronymic;
+        this._currentDate = dateOfVisit;
+        this._target = purpose;
+        this._comment = comment;
+    }
+    createCard() {
+        newCard = document.createElement("div");
+        board.appendChild(newCard);
+        newCard.classList.add("card");
+
+        let closeCard = document.createElement("div");
+        newCard.appendChild(closeCard);
+        closeCard.innerHTML = ("<i class=\"fas fa-times\"></i>");
+        closeCard.classList.add("close_card");
+
+        newCard.setAttribute("data-doc", this._doc);
+
+        board.addEventListener("click", function (event) {
+            let currentTarget = event.target;
+            if (currentTarget.tagName === "I") {
+                let targetParent =  currentTarget.parentElement;
+                targetParent.parentElement.remove();
+            }
+        });
+        newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
+        createElemInCard(newCard, `Доктор: ${this._doc}`);
+        createElemInCard(newCard, `Имя: ${this._userName}`);
+        createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
+        let showMoreButton = document.createElement("p");
+        showMoreButton.innerText = "ПОКАЗАТЬ БОЛЬШЕ";
+        showMoreButton.classList.add("showMoreButton");
+        newCard.appendChild(showMoreButton);
+        // createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
+        // createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
+        // createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
+        // createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
+    }
+}
+
+class Therapist extends Visit {
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age) {
+        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment,);
+        this._userAge = age;
+    }
+    showMore(target) {
+        visitsArray.forEach((visitsArrayObj) => {
+            if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
+                createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
+                createHiddenElemInCard(newCard, `Дата рождения: ${this._userAge}`);
+                createHiddenElemInCard(newCard, `Дата визита: ${this._currentDate}`);
+                createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
+                createHiddenElemInCard(newCard, `Комментарий: ${this._comment}`);
+                let hideTextButton = document.createElement("p");
+                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.classList.add("hideTextButton");
+                newCard.appendChild(hideTextButton);
+            }
+        })
+    }
+}
+
+class Cardiologist extends Visit {
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age) {
+        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
+        this._userPressure = pressure;
+        this._userBMI = bmi;
+        this._userDiseasesCS = diseasesCS;
+        this._age = age;
+    }
+}
+
+class Dentist extends Visit {
+    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit) {
+        super(doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
+        this._lastvis = lastVisit;
+    }
+}
+
+
 
 button.onclick = function () {
     inputs.forEach(function (form) {
@@ -32,6 +124,8 @@ closeForm.onclick = function() {
     transparentBlock.classList.remove("active");
 };
 
+
+
 select.onchange = function () {
     if (this.value === "therapist")  {
         removeActiveOfFormRequest();
@@ -52,76 +146,7 @@ select.onchange = function () {
 };
 
 
-////// C L A S S E S /////////
-class Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment) {
-        this._doc = doctor;
-        this._userName = name;
-        this._userSurname = surname;
-        this._userPatronymic = patronymic;
-        this._currentDate = dateOfVisit;
-        this._target = purpose;
-        this._comment = comment;
-    }
-    createCard() {
-        let newCard = document.createElement("div");
-        board.appendChild(newCard);
-        newCard.classList.add("card");
 
-        let closeCard = document.createElement("div");
-        newCard.appendChild(closeCard);
-        closeCard.innerHTML = ("<i class=\"fas fa-times\"></i>");
-        closeCard.classList.add("close_card");
-
-
-        board.addEventListener("click", function (event) {
-            let currentTarget = event.target;
-            if (currentTarget.tagName === "I") {
-                let targetParen =  currentTarget.parentElement;
-                targetParen.parentElement.remove();
-            }
-        });
-        newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
-        createElemInCard(newCard, `Имя: ${this._userName}`);
-        createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
-        createElemInCard(newCard, `Доктор: ${this._doc}`);
-        let showMoreButton = document.createElement("p");
-        showMoreButton.innerText = "Показать больше";
-        showMoreButton.classList.add("showMoreButton");
-        newCard.appendChild(showMoreButton);
-        // createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
-        // createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
-        // createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
-        // createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
-    }
-}
-
-class Therapist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age) {
-        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment,);
-        this._userAge = age;
-    }
-    // showMore(target) {
-    //     board.forEach()
-    // }
-}
-
-class Cardiologist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age) {
-        super (doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
-        this._userPressure = pressure;
-        this._userBMI = bmi;
-        this._userDiseasesCS = diseasesCS;
-        this._age = age;
-    }
-}
-
-class Dentist extends Visit {
-    constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit) {
-        super(doctor, name, surname, patronymic, dateOfVisit, purpose, comment);
-        this._lastvis = lastVisit;
-    }
-}
 
 requestButton.onclick = function () {
     if (select.value === "therapist") {
@@ -135,7 +160,7 @@ requestButton.onclick = function () {
         let age = document.querySelector(".age-therapist").value;
         if (name && surname && patronymic && dateOfVisit && purpose && age !== false) {
             notFoundSpan_Hide();
-            let visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
+            visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
             visitsArray.push(visitTherapist);
             visitTherapist.createCard();
 
@@ -157,7 +182,7 @@ requestButton.onclick = function () {
         let age = document.querySelector(".age-cardiologist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && pressure && bmi && diseasesCS && age !== false) {
             notFoundSpan_Hide();
-            let visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
+            visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
             visitsArray.push(visitCardiologist);
             visitCardiologist.createCard()
 
@@ -175,7 +200,7 @@ requestButton.onclick = function () {
         let lastVisit = document.querySelector(".lastVisit-dentist").value;
         if (doctor && name && surname && patronymic && dateOfVisit && purpose && lastVisit !== false) {
             notFoundSpan_Hide();
-            let visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
+            visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
             visitsArray.push(visitDentist);
             visitDentist.createCard()
 
@@ -185,7 +210,32 @@ requestButton.onclick = function () {
     }
     form.classList.remove("active");
     transparentBlock.classList.remove("active");
+    console.log(visitTherapist);
 };
+
+board.onclick = function ({target}) {
+    if (target.className === "showMoreButton") {
+        target.style.display = "none";
+        switch (target.parentElement.getAttribute("data-doc")) {
+            case "Терапевт":
+                visitTherapist.showMore(target);
+                break;
+            case "Кардиолог":
+                visitCardiologist.showMore(target);
+                break;
+            case "Стоматолог":
+                visitDentist.showMore(target);
+                break;
+        }
+    } else if (target.className === "hideTextButton") {
+        target.style.display = "none";
+        hiddenElemInCard.forEach((elem) => {
+            elem.style.display = "none";
+            document.querySelector(".showMoreButton").style.display = "block"
+        })
+
+    }
+}
 
 
 /////// F U N C T I O N S /////////
@@ -207,9 +257,10 @@ function createElemInCard (card, innerText) {
 
 function createHiddenElemInCard(card, innerText) {
     let paragraph = document.createElement("p");
-    paragraph.classList.add("show_more");
     paragraph.innerText = innerText;
+    // paragraph.classList.add("hidden_element")
     card.appendChild(paragraph);
+    hiddenElemInCard.push(paragraph);
 }
 
 function closeTheForm() {
@@ -220,10 +271,5 @@ function closeTheForm() {
     form.classList.remove("active");
 }
 
-board.onclick = function (event) {
-    let currentTarget = event.target;
-    if (currentTarget.className === "showMoreButton") {
-        currentTarget.style.display = "none";
 
-    }
-}
+
