@@ -28,8 +28,7 @@ header {
     margin: 0 auto 50px;
     width: 700px;
     height: 70px;
-    border: 1px solid dodgerblue;
-    box-shadow: dodgerblue;
+    border: 2px solid cadetblue;
     background: rgba(250, 250, 250, 0.5);
 }
 
@@ -62,15 +61,17 @@ header {
     margin: 0 auto;
     width: 700px;
     height: 350px;
-    justify-content: space-between;
-    border: 1px solid dodgerblue;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid cadetblue;
     background: rgba(250, 250, 250, 0.5);
 }
 
 .card {
+    width: 180px;
     display: inline-block;
-    background-color: cornflowerblue;
     position: relative;
+    background-color: rgba(250, 250, 250, 0.7);
 }
 
 .transparent_block {
@@ -116,13 +117,13 @@ header {
 }
 
 .showMoreButton {
-    color: darkred;
+    color: cadetblue;
     font-weight: bold;
     cursor: pointer;
 }
 
 .hideTextButton {
-    color: darkred;
+    color: cadetblue;
     font-weight: bold;
     cursor: pointer;
 }
@@ -141,7 +142,7 @@ header {
     top: 30%;
     right: 43%;
     padding: 20px;
-    background: rgba(250, 250, 250, 0.4);
+    background: rgba(250, 250, 250, 0.8);
 }
 
 .container-for-form {

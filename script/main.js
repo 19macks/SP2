@@ -35,15 +35,15 @@ class Visit {
             visitsArray.forEach((visitsArrayObj) => {
                 const {_doc: doctor, _userSurname: surname, _userName: name, _userPatronymic: patronymic, _visit: purpose, _age: age, _pressure: pressure, _indexMass: bmi, _currentDate: dateOfVisit, _disease: diseasesCS, _lastVisit: lastVisit,  _comments: comment = ''} = visitsArrayObj;
                 switch (doctor) {
-                    case "Терапевт":
+                    case "Therapist":
                         visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
                         visitTherapist.createCard();
                         break;
-                    case "Кардиолог":
+                    case "Cardiologist":
                         visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
                         visitCardiologist.createCard();
                         break;
-                    case "Стоматолог":
+                    case "Dentist":
                         visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
                         visitDentist.createCard();
                         break;
@@ -65,11 +65,11 @@ class Visit {
 
         newCard.setAttribute("data-doc", this._doc);
         newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
-        createElemInCard(newCard, `Доктор: ${this._doc}`);
-        createElemInCard(newCard, `Имя: ${this._userName}`);
-        createElemInCard(newCard, `Фамилия: ${this._userSurname}`);
+        createElemInCard(newCard, `Doctor: ${this._doc}`);
+        createElemInCard(newCard, `Name: ${this._userName}`);
+        createElemInCard(newCard, `Surname: ${this._userSurname}`);
         let showMoreButton = document.createElement("p");
-        showMoreButton.innerText = "ПОКАЗАТЬ БОЛЬШЕ";
+        showMoreButton.innerText = "SHOW MORE";
         showMoreButton.classList.add("showMoreButton");
         newCard.appendChild(showMoreButton);
     }
@@ -84,13 +84,13 @@ class Therapist extends Visit {
         visitsArray.forEach((visitsArrayObj) => {
             if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
                 let parentDiv = target.parentElement;
-                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
-                createHiddenElemInCard(parentDiv, `Дата рождения: ${visitsArrayObj._userAge}`);
-                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
-                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
-                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
+                createHiddenElemInCard(parentDiv, `Patronymic: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Date of Birth: ${visitsArrayObj._userAge}`);
+                createHiddenElemInCard(parentDiv, `Date of visit: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Purpose of the visit: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Wishes: ${visitsArrayObj._comment}`);
                 let hideTextButton = document.createElement("p");
-                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.innerText = "Hide";
                 hideTextButton.classList.add("hideTextButton");
                 parentDiv.appendChild(hideTextButton);
             }
@@ -111,16 +111,16 @@ class Cardiologist extends Visit {
             if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
                 let parentDiv = target.parentElement;
 
-                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
-                createHiddenElemInCard(parentDiv, `Дата рождения: ${visitsArrayObj._age}`);
-                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
-                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
-                createHiddenElemInCard(parentDiv, `Давление: ${visitsArrayObj._userPressure}`);
-                createHiddenElemInCard(parentDiv, `Индекс массы тела: ${visitsArrayObj._userBMI}`);
-                createHiddenElemInCard(parentDiv, `Перенесенные заболевания ССС: ${visitsArrayObj._userDiseasesCS}`);
-                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
+                createHiddenElemInCard(parentDiv, `Patronymic: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Date of Birth: ${visitsArrayObj._age}`);
+                createHiddenElemInCard(parentDiv, `Date of visit: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Purpose of the visit: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Normal pressure: ${visitsArrayObj._userPressure}`);
+                createHiddenElemInCard(parentDiv, `Body mass index: ${visitsArrayObj._userBMI}`);
+                createHiddenElemInCard(parentDiv, `Past illnesses: ${visitsArrayObj._userDiseasesCS}`);
+                createHiddenElemInCard(parentDiv, `Wishes: ${visitsArrayObj._comment}`);
                 let hideTextButton = document.createElement("p");
-                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.innerText = "Hide";
                 hideTextButton.classList.add("hideTextButton");
                 parentDiv.appendChild(hideTextButton);
             }
@@ -137,13 +137,13 @@ class Dentist extends Visit {
         visitsArray.forEach((visitsArrayObj) => {
             if (target.parentElement.getAttribute("data-id") === visitsArrayObj._idUser) {
                 let parentDiv = target.parentElement;
-                createHiddenElemInCard(parentDiv, `Отчество: ${visitsArrayObj._userPatronymic}`);
-                createHiddenElemInCard(parentDiv, `Дата визита: ${visitsArrayObj._currentDate}`);
-                createHiddenElemInCard(parentDiv, `Цель визита: ${visitsArrayObj._target}`);
-                createHiddenElemInCard(parentDiv, `Дата последнего визита: ${visitsArrayObj._lastvis}`);
-                createHiddenElemInCard(parentDiv, `Комментарий: ${visitsArrayObj._comment}`);
+                createHiddenElemInCard(parentDiv, `Patronymic: ${visitsArrayObj._userPatronymic}`);
+                createHiddenElemInCard(parentDiv, `Date of visit: ${visitsArrayObj._currentDate}`);
+                createHiddenElemInCard(parentDiv, `Date Last Visited: ${visitsArrayObj._target}`);
+                createHiddenElemInCard(parentDiv, `Purpose of the visit: ${visitsArrayObj._lastvis}`);
+                createHiddenElemInCard(parentDiv, `Wishes: ${visitsArrayObj._comment}`);
                 let hideTextButton = document.createElement("p");
-                hideTextButton.innerText = "СКРЫТЬ";
+                hideTextButton.innerText = "Hide";
                 hideTextButton.classList.add("hideTextButton");
                 parentDiv.appendChild(hideTextButton);
             }
@@ -202,7 +202,7 @@ select.onchange = function () {
 // Создание карточки на доске
 requestButton.onclick = function () {
     if (select.value === "therapist") {
-        let doctor = "Терапевт";
+        let doctor = "Therapist";
         let name = document.querySelector(".name-therapist").value;
         let surname = document.querySelector(".surname-therapist").value;
         let patronymic = document.querySelector(".patronymic-therapist").value;
@@ -218,10 +218,10 @@ requestButton.onclick = function () {
             writeVisitsArrayInLocalStr();
 
         } else {
-            alert("Для создания карточки необходимо заполните все поля!");
+            alert("To create a card, fill in all the fields!");
         }
     } else if (select.value === "cardiologist") {
-        let doctor = "Кардиолог";
+        let doctor = "Cardiologist";
         let name = document.querySelector(".name-cardiologist").value;
         let surname = document.querySelector(".surname-cardiologist").value;
         let patronymic = document.querySelector(".patronymic-cardiologist").value;
@@ -240,10 +240,10 @@ requestButton.onclick = function () {
             writeVisitsArrayInLocalStr()
 
         } else {
-            alert("Для создания карточки необходимо заполните все поля!");
+            alert("To create a card, fill in all the fields!");
         }
     } else if (select.value === "dentist") {
-        let doctor = "Стоматолог";
+        let doctor = "Dentist";
         let name = document.querySelector(".name-dentist").value;
         let surname = document.querySelector(".surname-dentist").value;
         let patronymic = document.querySelector(".patronymic-dentist").value;
@@ -259,7 +259,7 @@ requestButton.onclick = function () {
             writeVisitsArrayInLocalStr();
 
         } else {
-            alert("Для создания карточки необходимо заполните все поля!");
+            alert("To create a card, fill in all the fields!");
         }
     }
     form.classList.remove("active");
@@ -272,13 +272,13 @@ board.onclick = function ({target}) {
     if (target.className === "showMoreButton") {
         target.style.display = "none";
         switch (target.parentElement.getAttribute("data-doc")) {
-            case "Терапевт":
+            case "Therapist":
                 visitTherapist.showMore(target);
                 break;
-            case "Кардиолог":
+            case "Cardiologist":
                 visitCardiologist.showMore(target);
                 break;
-            case "Стоматолог":
+            case "Dentist":
                 visitDentist.showMore(target);
                 break;
         }
