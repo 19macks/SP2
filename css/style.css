@@ -1,11 +1,24 @@
+.wrapper {
+    background-image: url(../img/55864.jpg);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+
 .container {
-    margin: 100px auto;
     padding: 50px;
     border: 2px solid cadetblue;
     box-shadow: 0 0 5px cadetblue;
     width: 800px;
-    background-color: #CAE1FF;
     font-family: cursive;
+    background: rgba(250, 250, 250, 0.3);
 }
 
 header {
@@ -17,16 +30,16 @@ header {
     height: 70px;
     border: 1px solid dodgerblue;
     box-shadow: dodgerblue;
-    background-color: white;
+    background: rgba(250, 250, 250, 0.5);
 }
 
 .logo {
     display: inline-block;
-    width: 68px;
+    width: 232px;
     height: 68px;
-    margin-left: 50px;
-    background-image: url(../img/1416508.jpg);
+    background-image: url(../img/Logo_fr_Dr_House.png);
     background-size: cover;
+    margin-bottom: 10px;
 }
 
 .button {
@@ -51,7 +64,7 @@ header {
     height: 350px;
     justify-content: space-between;
     border: 1px solid dodgerblue;
-    background-color: white;
+    background: rgba(250, 250, 250, 0.5);
 }
 
 .card {
@@ -75,6 +88,7 @@ header {
     color: grey;
     font-size: 21px;
     font-family: cursive;
+    user-select: none;
 }
 
 .request {
@@ -127,7 +141,7 @@ header {
     top: 30%;
     right: 43%;
     padding: 20px;
-    background-color: #fff;
+    background: rgba(250, 250, 250, 0.4);
 }
 
 .container-for-form {
@@ -158,10 +172,19 @@ header {
 
 option {
     width: 86%;
+    background: rgba(250, 250, 250, 0.8);
 }
 
 select {
-   width: 98%;
+    width: 98%;
+    background: rgba(250, 250, 250, 0.8);
+    font-family: Calibri, sans-serif;
+}
+
+select option {
+    margin: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
 input {
