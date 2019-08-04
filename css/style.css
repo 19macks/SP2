@@ -53,6 +53,7 @@ header {
     margin-right: 50px;
     cursor: pointer;
     user-select: none;
+    background-color: rgba(250, 250, 250, 0.7);
 }
 
 .board {
@@ -68,10 +69,20 @@ header {
 }
 
 .card {
-    width: 180px;
+    min-width: 180px;
     display: inline-block;
     position: relative;
     background-color: rgba(250, 250, 250, 0.7);
+    box-shadow: cadetblue 0px 0px 5px;
+    border-color: cadetblue;
+    border-image: initial;
+    border-radius: 3px;
+    font-family: Calibri, sans-serif;;
+}
+
+.card p {
+    margin: 10px;
+    user-select: none;
 }
 
 .transparent_block {
@@ -143,6 +154,7 @@ header {
     right: 43%;
     padding: 20px;
     background: rgba(250, 250, 250, 0.8);
+    z-index: 1001;
 }
 
 .container-for-form {

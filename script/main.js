@@ -48,7 +48,7 @@ class Visit {
                         visitDentist.createCard();
                         break;
                 }
-
+                // canDragAndDrop()
             })
         }
     }
@@ -57,6 +57,7 @@ class Visit {
         newCard = document.createElement("div");
         board.appendChild(newCard);
         newCard.classList.add("card");
+        newCard.setAttribute("draggable", "true");
 
         let closeCard = document.createElement("div");
         newCard.appendChild(closeCard);
@@ -265,6 +266,7 @@ requestButton.onclick = function () {
     form.classList.remove("active");
     transparentBlock.classList.remove("active");
     console.log(visitsArray);
+    // canDragAndDrop();
 };
 
 // Интерактивные элементы доски
@@ -304,8 +306,10 @@ board.addEventListener("click", function ({target}) {
             }
         });
         parent.parentElement.remove();
+        document.querySelector(".not-found").classList.add("active");
     }
 });
+
 
 
 /////// F U N C T I O N S /////////
@@ -350,6 +354,68 @@ function loadVisitsArrayFromLocalStr() {
         visitsArray = JSON.parse(localStorage.getItem("ArrayOfCards"));
     }
 }
+
+// Drag & Drop
+// function canDragAndDrop() {
+//     newCard.onmousedown = function (event) {
+//         // console.log(event.target);
+//         if (event.target.classList.contains("card")) {
+//             alert("lol")
+//         }
+//         newCard.style.position = "absolute";
+//         newCard.style.zIndex = "1000";
+//         document.body.append(newCard);
+//         moveAt(event.pageX, event.pageY);
+//         function moveAt(pageX, pageY) {
+//             newCard.style.left = pageX - newCard.offsetWidth / 2 + 'px';
+//             newCard.style.top = pageY - newCard.offsetHeight / 2 + 'px';
+//         }
+//         function onMouseMove(event) {
+//             moveAt(event.pageX, event.pageY);
+//         }
+//         document.addEventListener('mousemove', onMouseMove);
+//         newCard.onmouseup = function() {
+//             document.removeEventListener('mousemove', onMouseMove);
+//             newCard.onmouseup = null;
+//         };
+//     };
+//     // newCard.onclick = function ({target}) {
+//     //     if (target.tagName === "P") {
+//     //         newCard.onmousedown = function (event) {
+//     //             newCard.style.position = "absolute";
+//     //             newCard.style.zIndex = "1000";
+//     //             document.body.append(newCard);
+//     //             moveAt(event.pageX, event.pageY);
+//     //             function moveAt(pageX, pageY) {
+//     //                 newCard.style.left = pageX - newCard.offsetWidth / 2 + 'px';
+//     //                 newCard.style.top = pageY - newCard.offsetHeight / 2 + 'px';
+//     //             }
+//     //             function onMouseMove(event) {
+//     //                 moveAt(event.pageX, event.pageY);
+//     //             }
+//     //             document.addEventListener('mousemove', onMouseMove);
+//     //             newCard.onmouseup = function() {
+//     //                 document.removeEventListener('mousemove', onMouseMove);
+//     //                 newCard.onmouseup = null;
+//     //             };
+//     //         }
+//     //     }
+//     // };
+// }
+
+board.addEventListener('dragover', (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+})
+board.addEventListener('drop', (event) => {
+    let dropCard = board.querySelector('.drag-card')
+    let coordinateX = event.pageX - (dropCard.offsetWidth / 2 + 16)
+    let coordinateY = event.pageY - (dropCard.offsetHeight / 2)
+    dropCard.style.position = 'absolute'
+    dropCard.style.top = `${coordinateY}px`
+    dropCard.style.left = `${coordinateX}px`
+})
+
 
 
 
