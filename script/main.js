@@ -73,6 +73,13 @@ class Visit {
         showMoreButton.innerText = "SHOW MORE";
         showMoreButton.classList.add("showMoreButton");
         newCard.appendChild(showMoreButton);
+
+        newCard.addEventListener('dragstart', (event) => {
+            event.target.classList.add('drag-card')
+        });
+        newCard.addEventListener('dragend', function(event) {
+            this.classList.remove('drag-card')
+        })
     }
 }
 
