@@ -74,11 +74,11 @@ class Visit {
         showMoreButton.classList.add("showMoreButton");
         newCard.appendChild(showMoreButton);
 
-        newCard.addEventListener('dragstart', (event) => {
-            event.target.classList.add('drag-card')
+        newCard.addEventListener('dragstart', ({target}) => {
+            target.classList.add('drag-card');
         });
-        newCard.addEventListener('dragend', function(event) {
-            this.classList.remove('drag-card')
+        newCard.addEventListener('dragend', function() {
+            this.classList.remove('drag-card');
         })
     }
 }
@@ -313,11 +313,26 @@ board.addEventListener("click", function ({target}) {
             }
         });
         parent.parentElement.remove();
-        document.querySelector(".not-found").classList.add("active");
+        if (!visitsArray.length) {
+            document.querySelector(".not-found").classList.add("active");
+        }
     }
 });
 
+// Drag & Drop
 
+board.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move'
+});
+board.addEventListener('drop', (event) => {
+    let dropCard = board.querySelector('.drag-card')
+    let coordinateX = event.pageX - (dropCard.offsetWidth / 2 + 16)
+    let coordinateY = event.pageY - (dropCard.offsetHeight / 2)
+    dropCard.style.position = 'absolute'
+    dropCard.style.top = `${coordinateY}px`
+    dropCard.style.left = `${coordinateX}px`
+});
 
 /////// F U N C T I O N S /////////
 function removeActiveOfFormRequest() {
@@ -362,66 +377,7 @@ function loadVisitsArrayFromLocalStr() {
     }
 }
 
-// Drag & Drop
-// function canDragAndDrop() {
-//     newCard.onmousedown = function (event) {
-//         // console.log(event.target);
-//         if (event.target.classList.contains("card")) {
-//             alert("lol")
-//         }
-//         newCard.style.position = "absolute";
-//         newCard.style.zIndex = "1000";
-//         document.body.append(newCard);
-//         moveAt(event.pageX, event.pageY);
-//         function moveAt(pageX, pageY) {
-//             newCard.style.left = pageX - newCard.offsetWidth / 2 + 'px';
-//             newCard.style.top = pageY - newCard.offsetHeight / 2 + 'px';
-//         }
-//         function onMouseMove(event) {
-//             moveAt(event.pageX, event.pageY);
-//         }
-//         document.addEventListener('mousemove', onMouseMove);
-//         newCard.onmouseup = function() {
-//             document.removeEventListener('mousemove', onMouseMove);
-//             newCard.onmouseup = null;
-//         };
-//     };
-//     // newCard.onclick = function ({target}) {
-//     //     if (target.tagName === "P") {
-//     //         newCard.onmousedown = function (event) {
-//     //             newCard.style.position = "absolute";
-//     //             newCard.style.zIndex = "1000";
-//     //             document.body.append(newCard);
-//     //             moveAt(event.pageX, event.pageY);
-//     //             function moveAt(pageX, pageY) {
-//     //                 newCard.style.left = pageX - newCard.offsetWidth / 2 + 'px';
-//     //                 newCard.style.top = pageY - newCard.offsetHeight / 2 + 'px';
-//     //             }
-//     //             function onMouseMove(event) {
-//     //                 moveAt(event.pageX, event.pageY);
-//     //             }
-//     //             document.addEventListener('mousemove', onMouseMove);
-//     //             newCard.onmouseup = function() {
-//     //                 document.removeEventListener('mousemove', onMouseMove);
-//     //                 newCard.onmouseup = null;
-//     //             };
-//     //         }
-//     //     }
-//     // };
-// }
 
-board.addEventListener('dragover', (event) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = 'move'
-})
-board.addEventListener('drop', (event) => {
-    let dropCard = board.querySelector('.drag-card')
-    let coordinateX = event.pageX - (dropCard.offsetWidth / 2 + 16)
-    let coordinateY = event.pageY - (dropCard.offsetHeight / 2)
-    dropCard.style.position = 'absolute'
-    dropCard.style.top = `${coordinateY}px`
-    dropCard.style.left = `${coordinateX}px`
-})
 
 
 
