@@ -309,6 +309,8 @@ board.addEventListener('click', ({target}) => {
         boardVisit = boardVisit.filter((visit) => {
             return visit._idUser !== (target.parentElement.getAttribute('data-user'))
         })
+
+
         target.parentElement.remove()
         writeVisitInLocalSt()
         if (boardVisit.length === 0) {

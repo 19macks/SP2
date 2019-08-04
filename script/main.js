@@ -1,6 +1,6 @@
+// Variables
 let button = document.querySelector(".button");
 let closeForm = document.querySelector(".close_button");
-let closeCard = document.querySelector(".close_card");
 
 let form = document.querySelector(".apply_to_doctor");
 let transparentBlock = document.querySelector(".transparent_block");
@@ -14,6 +14,8 @@ let visitCardiologist;
 let visitDentist;
 let newCard;
 
+loadVisitsArrayFromLocalStr();
+
 ////// C L A S S E S /////////
 class Visit {
     constructor(doctor, name, surname, patronymic, dateOfVisit, purpose, comment) {
@@ -26,6 +28,31 @@ class Visit {
         this._target = purpose;
         this._comment = comment;
     }
+
+    static loadFromLocalStInStart () {
+        if (visitsArray.length) {
+            notFoundSpan_Hide();
+            visitsArray.forEach((visitsArrayObj) => {
+                const {_doc: doctor, _userSurname: surname, _userName: name, _userPatronymic: patronymic, _visit: purpose, _age: age, _pressure: pressure, _indexMass: bmi, _currentDate: dateOfVisit, _disease: diseasesCS, _lastVisit: lastVisit,  _comments: comment = ''} = visitsArrayObj;
+                switch (doctor) {
+                    case "Терапевт":
+                        visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
+                        visitTherapist.createCard();
+                        break;
+                    case "Кардиолог":
+                        visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
+                        visitCardiologist.createCard();
+                        break;
+                    case "Стоматолог":
+                        visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
+                        visitDentist.createCard();
+                        break;
+                }
+
+            })
+        }
+    }
+
     createCard() {
         newCard = document.createElement("div");
         board.appendChild(newCard);
@@ -37,14 +64,6 @@ class Visit {
         closeCard.classList.add("close_card");
 
         newCard.setAttribute("data-doc", this._doc);
-
-        board.addEventListener("click", function (event) {
-            let currentTarget = event.target;
-            if (currentTarget.tagName === "I") {
-                let targetParent =  currentTarget.parentElement;
-                targetParent.parentElement.remove();
-            }
-        });
         newCard.setAttribute("data-id", `${this._userName}${this._userSurname}`);
         createElemInCard(newCard, `Доктор: ${this._doc}`);
         createElemInCard(newCard, `Имя: ${this._userName}`);
@@ -53,10 +72,6 @@ class Visit {
         showMoreButton.innerText = "ПОКАЗАТЬ БОЛЬШЕ";
         showMoreButton.classList.add("showMoreButton");
         newCard.appendChild(showMoreButton);
-        // createHiddenElemInCard(newCard, `Отчество: ${this._userPatronymic}`);
-        // createHiddenElemInCard(newCard, `Дата: ${this._currentDate}`);
-        // createHiddenElemInCard(newCard, `Цель визита: ${this._target}`);
-        // createHiddenElemInCard(newCard, `Пожелания: ${this._comment}`);
     }
 }
 
@@ -136,8 +151,9 @@ class Dentist extends Visit {
     }
 }
 
+Visit.loadFromLocalStInStart();
 
-
+// Запрос на появление формы для создания карточки
 button.onclick = function () {
     inputs.forEach(function (form) {
         form.value = "";
@@ -147,6 +163,12 @@ button.onclick = function () {
     transparentBlock.classList.add("active");
     form.classList.add("active");
 };
+
+// Закрытия формы с обнулением инпутов
+closeForm.onclick = function() {
+    closeTheForm();
+    transparentBlock.classList.remove("active");
+};
 transparentBlock.onclick = function (event) {
     let currentTarget = event.target;
     if (currentTarget.classList.contains("transparent_block")) {
@@ -155,13 +177,7 @@ transparentBlock.onclick = function (event) {
     }
 };
 
-closeForm.onclick = function() {
-    closeTheForm();
-    transparentBlock.classList.remove("active");
-};
-
-
-
+//Tabs с select
 select.onchange = function () {
     if (this.value === "therapist")  {
         removeActiveOfFormRequest();
@@ -183,7 +199,7 @@ select.onchange = function () {
 
 
 
-
+// Создание карточки на доске
 requestButton.onclick = function () {
     if (select.value === "therapist") {
         let doctor = "Терапевт";
@@ -199,7 +215,7 @@ requestButton.onclick = function () {
             visitTherapist = new Therapist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,age);
             visitsArray.push(visitTherapist);
             visitTherapist.createCard();
-
+            writeVisitsArrayInLocalStr();
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -220,7 +236,8 @@ requestButton.onclick = function () {
             notFoundSpan_Hide();
             visitCardiologist = new Cardiologist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,pressure, bmi, diseasesCS, age);
             visitsArray.push(visitCardiologist);
-            visitCardiologist.createCard()
+            visitCardiologist.createCard();
+            writeVisitsArrayInLocalStr()
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -238,7 +255,8 @@ requestButton.onclick = function () {
             notFoundSpan_Hide();
             visitDentist = new Dentist(doctor, name, surname, patronymic, dateOfVisit, purpose, comment ,lastVisit);
             visitsArray.push(visitDentist);
-            visitDentist.createCard()
+            visitDentist.createCard();
+            writeVisitsArrayInLocalStr();
 
         } else {
             alert("Для создания карточки необходимо заполните все поля!");
@@ -246,9 +264,10 @@ requestButton.onclick = function () {
     }
     form.classList.remove("active");
     transparentBlock.classList.remove("active");
-    console.log(visitTherapist);
+    console.log(visitsArray);
 };
 
+// Интерактивные элементы доски
 board.onclick = function ({target}) {
     if (target.className === "showMoreButton") {
         target.style.display = "none";
@@ -273,6 +292,21 @@ board.onclick = function ({target}) {
     }
 };
 
+// Удаление карточки с доски
+board.addEventListener("click", function ({target}) {
+    const parent = target.parentElement;
+    if (target.tagName === "I") {
+        visitsArray.forEach(function (elem) {
+            if (elem._idUser === parent.parentElement.getAttribute("data-id")) {
+                let index = visitsArray.indexOf(elem);
+                visitsArray.splice(index, 1);
+                writeVisitsArrayInLocalStr();
+            }
+        });
+        parent.parentElement.remove();
+    }
+});
+
 
 /////// F U N C T I O N S /////////
 function removeActiveOfFormRequest() {
@@ -296,7 +330,6 @@ function createHiddenElemInCard(card, innerText) {
     paragraph.innerText = innerText;
     paragraph.classList.add("hidden_element");
     card.appendChild(paragraph);
-
 }
 
 function closeTheForm() {
@@ -306,6 +339,19 @@ function closeTheForm() {
     select.value = "select_doctor";
     form.classList.remove("active");
 }
+
+function writeVisitsArrayInLocalStr() {
+    let serialArr = JSON.stringify(visitsArray);
+    localStorage.setItem("ArrayOfCards", serialArr);
+}
+
+function loadVisitsArrayFromLocalStr() {
+    if (localStorage.ArrayOfCards) {
+        visitsArray = JSON.parse(localStorage.getItem("ArrayOfCards"));
+    }
+}
+
+
 
 
 
